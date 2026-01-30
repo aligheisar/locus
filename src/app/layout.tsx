@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 
+import { Providers } from "@/context/providers";
+
 const roboto = Roboto();
 
 export const metadata: Metadata = {
@@ -15,8 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${roboto.className} antialiased`}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${roboto.className} antialiased`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

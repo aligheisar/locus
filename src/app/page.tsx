@@ -1,5 +1,11 @@
+import { ModeSwitcher } from "@/components/ModeSwitcher";
+
 const HomePage = () => {
-  return <h1>home page</h1>;
+  return (
+    <div>
+      <ModeSwitcher />
+    </div>
+  );
 };
 
 export default HomePage;
