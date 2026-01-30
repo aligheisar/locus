@@ -1,36 +1,169 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.13/schema.json",
   "assist": {
     "actions": {
       "source": {
-        "organizeImports": "on"
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              ":NODE:",
+              ":BUN:",
+              ":URL:",
+
+              ":BLANK_LINE:",
+
+              "react",
+              "react/**",
+              "react-dom",
+              "react-dom/**",
+              "next",
+              "next/**",
+              ":PACKAGE:",
+              ":PACKAGE_WITH_PROTOCOL:",
+
+              ":BLANK_LINE:",
+
+              "@/constants/**",
+              "@/config/**",
+              "@/lib/**",
+              "@/schemas/**",
+              "@/utils/**",
+              "@/api/**",
+              "@/types/**",
+              "@/store/**",
+              "@/context/**",
+              "@/hooks/**",
+              "@/components/**",
+
+              ":BLANK_LINE:",
+
+              "@/features/*/constants/**",
+              "@/features/*/config/**",
+              "@/features/*/lib/**",
+              "@/features/*/schemas/**",
+              "@/features/*/utils/**",
+              "@/features/*/api/**",
+              "@/features/*/types/**",
+              "@/features/*/store/**",
+              "@/features/*/context/**",
+              "@/features/*/hooks/**",
+              "@/features/*/components/**",
+              "@/features/*/**",
+
+              ":BLANK_LINE:",
+
+              "@/widgets/*/constants/**",
+              "@/widgets/*/config/**",
+              "@/widgets/*/lib/**",
+              "@/widgets/*/schemas/**",
+              "@/widgets/*/utils/**",
+              "@/widgets/*/api/**",
+              "@/widgets/*/types/**",
+              "@/widgets/*/store/**",
+              "@/widgets/*/context/**",
+              "@/widgets/*/hooks/**",
+              "@/widgets/*/components/**",
+              "@/widgets/*/**",
+
+              ":BLANK_LINE:",
+
+              ":ALIAS:",
+
+              ":BLANK_LINE:",
+
+              ":PATH:"
+            ],
+            "identifierOrder": "natural"
+          }
+        },
+        "recommended": true,
+        "useSortedAttributes": "on",
+        "useSortedKeys": {
+          "level": "on",
+          "options": {
+            "sortOrder": "natural"
+          }
+        },
+        "useSortedProperties": "on"
       }
+    },
+    "enabled": true,
+    "includes": ["./src/**"]
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   },
   "files": {
-    "ignoreUnknown": true,
-    "includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
+    "ignoreUnknown": true
   },
   "formatter": {
+    "bracketSpacing": true,
     "enabled": true,
+    "expand": "auto",
     "indentStyle": "space",
-    "indentWidth": 2
+    "indentWidth": 2,
+    "lineWidth": 80
+  },
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "always",
+      "jsxQuoteStyle": "double",
+      "quoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "all"
+    },
+    "jsxRuntime": "transparent",
+    "parser": {
+      "jsxEverywhere": false
+    }
+  },
+  "json": {
+    "formatter": {
+      "expand": "auto",
+      "trailingCommas": "none"
+    }
   },
   "linter": {
     "domains": {
       "next": "recommended",
-      "react": "recommended"
+      "project": "recommended",
+      "react": "recommended",
+      "tailwind": "recommended"
     },
     "enabled": true,
+    "includes": ["**", "!src/components/ui/**"],
     "rules": {
+      "complexity": {
+        "noImportantStyles": "off"
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "fix": "safe",
+          "level": "on",
+          "options": {
+            "attributes": ["className"],
+            "functions": ["cn", "clsx", "cva", "tw", "tw.*"]
+          }
+        }
+      },
       "recommended": true,
-      "suspicious": {
-        "noUnknownAtRules": "off"
+      "style": {
+        "useImportType": {
+          "fix": "safe",
+          "level": "on",
+          "options": {
+            "style": "auto"
+          }
+        }
       }
     }
   },
   "vcs": {
     "clientKind": "git",
+    "defaultBranch": "main",
     "enabled": true,
     "useIgnoreFile": true
   }
