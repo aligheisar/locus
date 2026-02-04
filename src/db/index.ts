@@ -7,6 +7,6 @@ const sql = postgres(env.DATABASE_URL, {
   max: 1,
 });
 
-const db = drizzle(sql);
+const db = drizzle(sql, { casing: "snake_case" });
 
 export { db };
