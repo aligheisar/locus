@@ -21,7 +21,7 @@ export function ModeSwitcher() {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={(props) => {
-          return <Button variant="outline" {...props} />;
+          return <Button size="icon" variant="outline" {...props} />;
         }}
       >
         <HugeiconsIcon
