@@ -17,8 +17,8 @@
         "next": "16.1.6",
         "next-themes": "^0.4.6",
         "postgres": "^3.4.8",
-        "react": "19.2.3",
-        "react-dom": "19.2.3",
+        "react": "^19.3.0-canary-65db1000-20260206",
+        "react-dom": "^19.3.0-canary-65db1000-20260206",
         "shadcn": "^3.7.0",
         "tailwind-merge": "^3.4.0",
         "tw-animate-css": "^1.4.0",
@@ -870,9 +870,9 @@
 
     "raw-body": ["raw-body@3.0.2", "", { "dependencies": { "bytes": "~3.1.2", "http-errors": "~2.0.1", "iconv-lite": "~0.7.0", "unpipe": "~1.0.0" } }, "sha512-K5zQjDllxWkf7Z5xJdV0/B0WTNqx6vxG70zJE4N0kBs4LovmEYWJzQGxC9bS9RAKu3bgM40lrd5zoLJ12MQ5BA=="],
 
-    "react": ["react@19.2.3", "", {}, "sha512-Ku/hhYbVjOQnXDZFv2+RibmLFGwFdeeKHFcOTlrt7xplBnya5OGn/hIRDsqDiSUcfORsDC7MPxwork8jBwsIWA=="],
+    "react": ["react@19.3.0-canary-65db1000-20260206", "", {}, "sha512-MFAG7uaKrW3gLVQsYJFzzGG4X02GpnQPeWdu0OXhKWMzslDjlKMUzcIlV6pgnPbmmlmLjLggmEJ0jbIcjSOj2g=="],
 
-    "react-dom": ["react-dom@19.2.3", "", { "dependencies": { "scheduler": "^0.27.0" }, "peerDependencies": { "react": "^19.2.3" } }, "sha512-yELu4WmLPw5Mr/lmeEpox5rw3RETacE++JgHqQzd2dg+YbJuat3jH4ingc+WPZhxaoFzdv9y33G+F7Nl5O0GBg=="],
+    "react-dom": ["react-dom@19.3.0-canary-65db1000-20260206", "", { "dependencies": { "scheduler": "0.28.0-canary-65db1000-20260206" }, "peerDependencies": { "react": "19.3.0-canary-65db1000-20260206" } }, "sha512-hdBHqtboLZtGZ5lvzYxB/aVN+MA/fjCPt/tc/y84dNpMM4ThsXjF9irugfMUOh04a64uIPoeDxg+j2uTsWMs/A=="],
 
     "recast": ["recast@0.23.11", "", { "dependencies": { "ast-types": "^0.16.1", "esprima": "~4.0.0", "source-map": "~0.6.1", "tiny-invariant": "^1.3.3", "tslib": "^2.0.1" } }, "sha512-YTUo+Flmw4ZXiWfQKGcwwc11KnoRAYgzAE2E7mXKCjSviTKShtxBsN6YUUBB2gtaBzKzeKunxhUwNHQuRryhWA=="],
 
@@ -902,7 +902,7 @@
 
     "safer-buffer": ["safer-buffer@2.1.2", "", {}, "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg=="],
 
-    "scheduler": ["scheduler@0.27.0", "", {}, "sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q=="],
+    "scheduler": ["scheduler@0.28.0-canary-65db1000-20260206", "", {}, "sha512-fAOngbaREk7HhsYxdYDwjbrv6uxwIORNXbzwHaKyLVlTTjc+Bjs37C9VymAHhfZjDR/guu1v16g5uLg0kBTDtQ=="],
 
     "semver": ["semver@7.7.3", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-SdsKMrI9TdgjdweUSR9MweHA4EJ8YxHn8DFaDisvhVlUOe4BF1tLD7GAj0lIqWVl+dPb/rExr0Btby5loQm20Q=="],
 
