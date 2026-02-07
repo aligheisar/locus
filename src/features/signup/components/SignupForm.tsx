@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
-import { useSignupForm } from "@/features/sign-up/hooks/use-signup-form";
+import { useSignupForm } from "@/features/signup/hooks/use-signup-form";
 
 const SignupForm = () => {
   const { form } = useSignupForm();

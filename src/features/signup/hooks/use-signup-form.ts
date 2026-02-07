@@ -1,6 +1,6 @@
 import { useForm } from "@tanstack/react-form";
 
-import { signupFormSchema } from "@/features/sign-up/schemas/signup-form";
+import { signupFormSchema } from "@/features/signup/schemas/signup-form";
 
 const useSignupForm = () => {
   const form = useForm({
