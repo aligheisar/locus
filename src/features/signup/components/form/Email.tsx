@@ -2,6 +2,8 @@
 
 import { ViewTransition } from "react";
 import Link from "next/link";
+import { Loader } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
 import { Card, CardTitle } from "@/components/ResponsiveCard";
@@ -51,7 +53,12 @@ const EmailForm = () => {
             />
             <FieldGroup>
               <ViewTransition name="form-submit-button">
-                <Button type="submit">Next</Button>
+                <Button disabled={form.formState.isSubmitting} type="submit">
+                  {form.formState.isSubmitting && (
+                    <HugeiconsIcon icon={Loader} />
+                  )}
+                  Next
+                </Button>
               </ViewTransition>
               <FieldDescription className="text-center">
                 Already have an account? <Link href="/">Sign in</Link>

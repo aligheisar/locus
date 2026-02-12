@@ -2,6 +2,8 @@
 
 import { startTransition, ViewTransition } from "react";
 import { useRouter } from "next/navigation";
+import { Loader } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
 import { Card, CardTitle } from "@/components/ResponsiveCard";
@@ -66,7 +68,12 @@ const UsernameForm = () => {
                 Back
               </Button>
               <ViewTransition name="form-submit-button">
-                <Button type="submit">Finish</Button>
+                <Button disabled={form.formState.isSubmitting} type="submit">
+                  {form.formState.isSubmitting && (
+                    <HugeiconsIcon icon={Loader} />
+                  )}
+                  Finish
+                </Button>
               </ViewTransition>
             </Field>
           </FieldGroup>
