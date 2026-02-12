@@ -1,5 +1,6 @@
 "use client";
 
+import { ViewTransition } from "react";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 
@@ -49,7 +50,9 @@ const EmailForm = () => {
               )}
             />
             <FieldGroup>
-              <Button type="submit">Submit</Button>
+              <ViewTransition name="form-submit-button">
+                <Button type="submit">Next</Button>
+              </ViewTransition>
               <FieldDescription className="text-center">
                 Already have an account? <Link href="/">Sign in</Link>
               </FieldDescription>
