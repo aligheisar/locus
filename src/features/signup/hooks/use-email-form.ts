@@ -24,7 +24,7 @@ const useEmailForm = () => {
     updateFormData(data);
 
     startTransition(() => {
-      router.push("/signup/generate-password");
+      router.push("/signup/password");
     });
   };
 
