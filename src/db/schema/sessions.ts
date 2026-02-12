@@ -7,7 +7,10 @@ const sessionsTable = pgTable("sessions", {
   expiresAt: timestamp().notNull(),
   id: uuid().defaultRandom().primaryKey(),
   token: text().notNull(),
-  updatedAt: timestamp(),
+  updatedAt: timestamp()
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
   userId: uuid()
     .references(() => usersTable.id)
     .notNull(),
