@@ -38,6 +38,7 @@ const EmailForm = () => {
                   <Input
                     {...field}
                     aria-invalid={fieldState.invalid}
+                    autoComplete="email"
                     id="form-rhf-email"
                     placeholder="example@gmail.com"
                   />
