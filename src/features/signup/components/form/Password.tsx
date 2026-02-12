@@ -72,7 +72,7 @@ const PasswordForm = () => {
                 )}
               />
             </FieldGroup>
-            <Field>
+            <Field className="sm:flex-row sm:*:flex-1">
               <Button
                 onClick={() => {
                   startTransition(() => {
