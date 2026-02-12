@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { startTransition, ViewTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Controller } from "react-hook-form";
 
 import { Card, CardTitle } from "@/components/ResponsiveCard";
@@ -8,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -18,13 +18,16 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { usePasswordForm } from "@/features/signup/hooks/use-password-form";
 
 const PasswordForm = () => {
+  const router = useRouter();
   const { form, handleFormSubmit } = usePasswordForm();
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create an account</CardTitle>
-        <CardDescription>Start creating your account for free.</CardDescription>
+        <CardTitle>Create your password</CardTitle>
+        <CardDescription>
+          Choose a strong password to keep your account secure.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={form.handleSubmit(handleFormSubmit)}>
@@ -69,12 +72,22 @@ const PasswordForm = () => {
                 )}
               />
             </FieldGroup>
-            <FieldGroup>
-              <Button type="submit">Submit</Button>
-              <FieldDescription className="text-center">
-                Already have an account? <Link href="/">Sign in</Link>
-              </FieldDescription>
-            </FieldGroup>
+            <Field>
+              <Button
+                onClick={() => {
+                  startTransition(() => {
+                    router.replace("/signup");
+                  });
+                }}
+                type="button"
+                variant="secondary"
+              >
+                Back
+              </Button>
+              <ViewTransition name="form-submit-button">
+                <Button type="submit">Next</Button>
+              </ViewTransition>
+            </Field>
           </FieldGroup>
         </form>
       </CardContent>
