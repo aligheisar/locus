@@ -1,14 +1,15 @@
 import { pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 
-const usersTable = pgTable("users", {
+const profilesTable = pgTable("profiles", {
   createdAt: timestamp().defaultNow().notNull(),
-  email: varchar({ length: 320 }).notNull().unique(),
-  emailVerifiedAt: timestamp(),
+  firstName: varchar({ length: 50 }),
   id: uuid().defaultRandom().primaryKey(),
+  lastName: varchar({ length: 50 }),
   updatedAt: timestamp()
     .defaultNow()
     .notNull()
     .$onUpdate(() => new Date()),
+  username: varchar({ length: 60 }).notNull().unique(),
 });
 
-export { usersTable };
+export { profilesTable };
