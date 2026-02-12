@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 
+import { ResponsiveCard } from "@/components/ResponsiveCard";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
   CardContent,
   CardDescription,
   CardHeader,
@@ -26,7 +26,7 @@ const EmailForm = () => {
   const { form, handleFormSubmit } = useEmailForm();
 
   return (
-    <Card className="w-full max-w-md max-sm:max-w-none max-sm:bg-transparent max-sm:ring-0">
+    <ResponsiveCard>
       <CardHeader>
         <CardTitle>Create an account</CardTitle>
         <CardDescription>Start creating your account for free.</CardDescription>
@@ -61,7 +61,7 @@ const EmailForm = () => {
           </FieldGroup>
         </form>
       </CardContent>
-    </Card>
+    </ResponsiveCard>
   );
 };
 
