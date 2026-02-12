@@ -34,12 +34,12 @@ const EmailForm = () => {
               name="email"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rhf-email">Email</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Email</FieldLabel>
                   <Input
                     {...field}
                     aria-invalid={fieldState.invalid}
                     autoComplete="email"
-                    id="form-rhf-email"
+                    id={field.name}
                     placeholder="example@gmail.com"
                   />
                   {fieldState.invalid && (
