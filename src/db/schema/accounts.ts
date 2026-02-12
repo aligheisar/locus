@@ -1,5 +1,7 @@
 import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
+import { usersTable } from "@/db/schema/users";
+
 const accountsTable = pgTable("accounts", {
   createdAt: timestamp().defaultNow().notNull(),
   id: uuid().defaultRandom().primaryKey(),
@@ -9,6 +11,9 @@ const accountsTable = pgTable("accounts", {
     .defaultNow()
     .notNull()
     .$onUpdate(() => new Date()),
+  userId: uuid()
+    .references(() => usersTable.id)
+    .notNull(),
 });
 
 export { accountsTable };
