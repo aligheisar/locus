@@ -1,11 +1,13 @@
-import { SignupForm } from "@/features/signup/components/SignupForm";
+import { ViewTransition } from "react";
 
-const SignupPage = async () => {
+import { EmailForm } from "@/features/signup/components/form/Email";
+
+const EmailPage = async () => {
   return (
-    <main className="flex items-center justify-center">
-      <SignupForm />
-    </main>
+    <ViewTransition name="signup-form">
+      <EmailForm />
+    </ViewTransition>
   );
 };
 
-export default SignupPage;
+export default EmailPage;
