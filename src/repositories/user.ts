@@ -1,0 +1,22 @@
+import { eq } from "drizzle-orm";
+
+import { db } from "@/db";
+import { usersTable } from "@/db/schema/users";
+
+const createUser = async (email: string) => {
+  return db
+    .insert(usersTable)
+    .values({ email })
+    .returning({ userId: usersTable.id });
+};
+
+const findUserByEmail = async (email: string) => {
+  return db
+    .select({
+      id: usersTable.id,
+    })
+    .from(usersTable)
+    .where(eq(usersTable.email, email));
+};
+
+export { findUserByEmail, createUser };
