@@ -1,11 +1,11 @@
 import type { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
-import { Card } from "@/components/ui/card";
+import * as Default from "@/components/ui/card";
 
-const ResponsiveCard = (props: ComponentProps<typeof Card>) => {
+const Card = (props: ComponentProps<typeof Default.Card>) => {
   return (
-    <Card
+    <Default.Card
       {...props}
       className={cn(
         "w-full max-w-md max-sm:max-w-none max-sm:bg-transparent max-sm:ring-0",
@@ -15,4 +15,13 @@ const ResponsiveCard = (props: ComponentProps<typeof Card>) => {
   );
 };
 
-export { ResponsiveCard };
+const CardTitle = (props: ComponentProps<typeof Default.CardTitle>) => {
+  return (
+    <Default.CardTitle
+      {...props}
+      className={cn("max-sm:text-xl", props.className)}
+    />
+  );
+};
+
+export { Card, CardTitle };
