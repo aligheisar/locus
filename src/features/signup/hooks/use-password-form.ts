@@ -1,3 +1,5 @@
+import { startTransition } from "react";
+import { useRouter } from "next/navigation";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useForm } from "react-hook-form";
 import * as v from "valibot";
@@ -6,6 +8,7 @@ import { signupFormSchema } from "@/features/signup/schemas/signup-form";
 import { useSignup } from "@/features/signup/hooks/use-signup";
 
 const usePasswordForm = () => {
+  const router = useRouter();
   const { formData, updateData: updateFormData } = useSignup();
   const baseSchema = v.pick(signupFormSchema, ["password", "confirmPassword"]);
 
@@ -33,6 +36,10 @@ const usePasswordForm = () => {
 
   const handleFormSubmit = async (data: PasswordFormSchema) => {
     updateFormData(data);
+
+    startTransition(() => {
+      router.push("/signup/username");
+    });
   };
 
   return {
