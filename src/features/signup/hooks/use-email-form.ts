@@ -7,6 +7,8 @@ import * as v from "valibot";
 import { signupFormSchema } from "@/features/signup/schemas/signup-form";
 import { useSignup } from "@/features/signup/hooks/use-signup";
 
+import { isEmailExist } from "@/actions/user";
+
 const useEmailForm = () => {
   const router = useRouter();
   const { formData, updateData: updateFormData } = useSignup();
@@ -21,6 +23,12 @@ const useEmailForm = () => {
   });
 
   const handleFormSubmit = async (data: EmailFormSchema) => {
+    if (await isEmailExist(data.email)) {
+      form.reset();
+      console.log("email exist");
+      return;
+    }
+
     updateFormData(data);
 
     startTransition(() => {

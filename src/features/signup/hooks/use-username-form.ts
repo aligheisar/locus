@@ -7,6 +7,9 @@ import * as v from "valibot";
 import { signupFormSchema } from "@/features/signup/schemas/signup-form";
 import { useSignup } from "@/features/signup/hooks/use-signup";
 
+import { signupUserAction } from "@/actions/auth";
+import { isUsernameExist } from "@/actions/profile";
+
 const useUsernameForm = () => {
   const router = useRouter();
   const { formData, updateData: updateFormData } = useSignup();
@@ -21,7 +24,15 @@ const useUsernameForm = () => {
   });
 
   const handleFormSubmit = async (data: UsernameFormSchema) => {
+    if (await isUsernameExist(data.username)) {
+      form.reset();
+      console.log("username exist");
+      return;
+    }
+
     updateFormData(data);
+
+    await signupUserAction({ ...formData, username: data.username });
 
     startTransition(() => {
       router.push("/");
