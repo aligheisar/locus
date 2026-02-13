@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { eq } from "drizzle-orm";
 
+import { hashPassword } from "@/lib/password";
 import { createSession, verifySession } from "@/lib/session";
 
 import type { SignupFormType } from "@/features/signup/schemas/signup-form";
@@ -13,8 +14,9 @@ import { createUser } from "@/repositories/user";
 
 const signupUser = async (user: SignupFormType) => {
   const [{ userId }] = await createUser(user.email);
+  const hashedPassword = await hashPassword(user.password);
   await createProfile(user.username, userId);
-  await createAccount(user.password, userId);
+  await createAccount(hashedPassword, userId);
   await createSession(userId);
 };
 
