@@ -7,7 +7,7 @@ import {
   signupFormSchema,
 } from "@/features/signup/schemas/signup-form";
 
-import { signupUser } from "@/services/user";
+import { logoutUser, signupUser } from "@/services/user";
 
 const signupUserAction = async (user: SignupFormType | unknown) => {
   const validatedData = safeParse(signupFormSchema, user);
@@ -16,4 +16,8 @@ const signupUserAction = async (user: SignupFormType | unknown) => {
   await signupUser(validatedData.output);
 };
 
-export { signupUserAction };
+const logoutUserAction = async () => {
+  await logoutUser();
+};
+
+export { signupUserAction, logoutUserAction };
