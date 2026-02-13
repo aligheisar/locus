@@ -14,7 +14,7 @@ const sessionsTable = pgTable("sessions", {
     .defaultNow()
     .notNull()
     .$onUpdate(() => new Date()),
-  userAgent: text().notNull(),
+  userAgent: text(),
   userId: uuid()
     .references(() => usersTable.id)
     .notNull(),
