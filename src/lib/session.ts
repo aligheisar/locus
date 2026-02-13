@@ -41,7 +41,7 @@ const createSession = async (userId: string) => {
     userId,
   });
 
-  const session = await encrypt({ expiresAt, sessionId });
+  const session = await encrypt({ expiresAt, sessionId, userId });
 
   const cookieStore = await cookies();
   cookieStore.set("session", session, {
@@ -58,11 +58,14 @@ const verifySession = cache(async () => {
   const sessionCookie = cookieStore.get("session")?.value;
   const session = await decrypt(sessionCookie);
 
-  if (!session || !session.sessionId) {
+  if (!session) {
     return null;
   }
 
-  return { sessionId: session.sessionId as string };
+  return {
+    sessionId: session.sessionId as string,
+    userId: session.userId as string,
+  };
 });
 
 export { encrypt, decrypt, createSession, verifySession };
