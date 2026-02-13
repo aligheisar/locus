@@ -1,7 +1,10 @@
 import type { ToastCode, ToastType } from "@/types/toast";
 
 const toastMessages = {
-  error: {},
+  error: {
+    usernameTaken: "This username is taken.",
+    youAlreadyRegistered: "You already registered.",
+  },
   info: {},
   success: {},
   warning: {},
