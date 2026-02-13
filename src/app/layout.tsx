@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 import { Providers } from "@/context/providers";
+import { Toaster } from "@/components/ui/sonner";
 
 const roboto = localFont({
   src: [
@@ -48,7 +49,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${roboto.variable} antialiased`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <div className="grid min-h-dvh">{children}</div>
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );
