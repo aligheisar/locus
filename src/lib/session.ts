@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { cookies, headers } from "next/headers";
 import { type JWTPayload, jwtVerify, SignJWT } from "jose";
 
@@ -52,4 +53,16 @@ const createSession = async (userId: string) => {
   });
 };
 
-export { encrypt, decrypt, createSession };
+const verifySession = cache(async () => {
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get("session")?.value;
+  const session = await decrypt(sessionCookie);
+
+  if (!session || !session.sessionId) {
+    return null;
+  }
+
+  return { sessionId: session.sessionId as string };
+});
+
+export { encrypt, decrypt, createSession, verifySession };
