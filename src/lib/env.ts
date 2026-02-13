@@ -5,5 +5,6 @@ export const env = createEnv({
   experimental__runtimeEnv: process.env,
   server: {
     DATABASE_URL: v.pipe(v.string(), v.url()),
+    SESSION_SECRET: v.string(),
   },
 });
