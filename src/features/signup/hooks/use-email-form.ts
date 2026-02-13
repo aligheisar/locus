@@ -26,7 +26,6 @@ const useEmailForm = () => {
 
   const handleFormSubmit = async (data: EmailFormSchema) => {
     if (await isEmailExist(data.email)) {
-      form.reset();
       showToast("error", "youAlreadyRegistered");
       return;
     }

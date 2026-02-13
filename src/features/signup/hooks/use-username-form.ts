@@ -27,7 +27,6 @@ const useUsernameForm = () => {
 
   const handleFormSubmit = async (data: UsernameFormSchema) => {
     if (await isUsernameExist(data.username)) {
-      form.reset();
       showToast("error", "usernameTaken");
       return;
     }
