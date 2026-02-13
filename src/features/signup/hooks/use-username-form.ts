@@ -4,6 +4,8 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useForm } from "react-hook-form";
 import * as v from "valibot";
 
+import { showToast } from "@/lib/show-toast";
+
 import { signupFormSchema } from "@/features/signup/schemas/signup-form";
 import { useSignup } from "@/features/signup/hooks/use-signup";
 
@@ -26,7 +28,7 @@ const useUsernameForm = () => {
   const handleFormSubmit = async (data: UsernameFormSchema) => {
     if (await isUsernameExist(data.username)) {
       form.reset();
-      console.log("username exist");
+      showToast("error", "usernameTaken");
       return;
     }
 

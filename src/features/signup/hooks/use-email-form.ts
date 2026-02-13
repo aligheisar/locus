@@ -4,6 +4,8 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useForm } from "react-hook-form";
 import * as v from "valibot";
 
+import { showToast } from "@/lib/show-toast";
+
 import { signupFormSchema } from "@/features/signup/schemas/signup-form";
 import { useSignup } from "@/features/signup/hooks/use-signup";
 
@@ -25,7 +27,7 @@ const useEmailForm = () => {
   const handleFormSubmit = async (data: EmailFormSchema) => {
     if (await isEmailExist(data.email)) {
       form.reset();
-      console.log("email exist");
+      showToast("error", "youAlreadyRegistered");
       return;
     }
 
