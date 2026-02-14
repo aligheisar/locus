@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, ViewTransition } from "react";
+import { startTransition, useEffect, ViewTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Controller } from "react-hook-form";
 
@@ -16,10 +16,18 @@ import {
 import { PasswordInput } from "@/components/ui/password-input";
 
 import { usePasswordForm } from "@/features/signup/hooks/use-password-form";
+import { useSignup } from "@/features/signup/hooks/use-signup";
 
 const PasswordForm = () => {
   const router = useRouter();
+  const { formData } = useSignup();
   const { form, handleFormSubmit } = usePasswordForm();
+
+  useEffect(() => {
+    if (!formData.email) {
+      router.push("/signup");
+    }
+  }, [formData, router]);
 
   return (
     <Card>

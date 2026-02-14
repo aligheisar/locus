@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, ViewTransition } from "react";
+import { startTransition, useEffect, ViewTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Loader } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -17,11 +17,19 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
+import { useSignup } from "@/features/signup/hooks/use-signup";
 import { useUsernameForm } from "@/features/signup/hooks/use-username-form";
 
 const UsernameForm = () => {
+  const { formData } = useSignup();
   const router = useRouter();
   const { form, handleFormSubmit } = useUsernameForm();
+
+  useEffect(() => {
+    if (!formData.password || !formData.confirmPassword) {
+      router.push("/signup/password");
+    }
+  }, [formData, router]);
 
   return (
     <Card>
