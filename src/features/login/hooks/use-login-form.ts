@@ -7,6 +7,8 @@ import {
   loginFormSchema,
 } from "@/features/login/schemas/login-form";
 
+import { loginUserAction } from "@/actions/auth";
+
 const useLoginForm = () => {
   const router = useRouter();
 
@@ -19,7 +21,8 @@ const useLoginForm = () => {
   });
 
   const handleFormSubmit = async (data: LoginFormType) => {
-    console.log(data);
+    await loginUserAction(data);
+
     router.push("/");
   };
 
