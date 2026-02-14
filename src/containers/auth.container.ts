@@ -1,10 +1,12 @@
 import { AccountRepository } from "@/repositories/account.repository";
 import { AuthRepository } from "@/repositories/auth.repository";
+import { ProfileRepository } from "@/repositories/profile.repository";
 import { AuthService } from "@/services/auth.service";
 
 const authRepo = new AuthRepository();
 const accountRepo = new AccountRepository();
+const profileRepo = new ProfileRepository();
 
-const authService = new AuthService(authRepo, accountRepo);
+const authService = new AuthService(authRepo, accountRepo, profileRepo);
 
 export { authService };

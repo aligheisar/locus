@@ -25,4 +25,8 @@ const logoutUserAction = async () => {
   await authService.logout();
 };
 
-export { signupUserAction, logoutUserAction, loginUserAction };
+const isUsernameExist = async (username: string) => {
+  return await authService.isUsernameExist(username);
+};
+
+export { signupUserAction, logoutUserAction, loginUserAction, isUsernameExist };

@@ -11,19 +11,20 @@ import { db } from "@/db";
 import { sessionsTable } from "@/db/schema/sessions";
 import type { AccountRepository } from "@/repositories/account.repository";
 import type { AuthRepository } from "@/repositories/auth.repository";
-import { createProfile } from "@/repositories/profile";
+import type { ProfileRepository } from "@/repositories/profile.repository";
 import { createUser } from "@/repositories/user";
 
 class AuthService {
   constructor(
     private authRepo: AuthRepository,
     private accountRepo: AccountRepository,
+    private profileRepo: ProfileRepository,
   ) {}
 
   async signup(user: SignupFormType) {
     const [{ userId }] = await createUser(user.email);
     const hashedPassword = await hashPassword(user.password);
-    await createProfile(user.username, userId);
+    await this.profileRepo.create(user.username, userId);
     await this.accountRepo.create(hashedPassword, userId);
     await createSession(userId);
   }
@@ -51,6 +52,13 @@ class AuthService {
     cookieStore.delete("session");
 
     return { success: true };
+  }
+
+  async isUsernameExist(username: string) {
+    const result = await this.profileRepo.findByUsername(username);
+
+    if (result.length) return true;
+    return false;
   }
 }
 
