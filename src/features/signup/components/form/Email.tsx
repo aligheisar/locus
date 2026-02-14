@@ -60,9 +60,11 @@ const EmailForm = () => {
                   Next
                 </Button>
               </ViewTransition>
-              <FieldDescription className="text-center">
-                Already have an account? <Link href="/">Sign in</Link>
-              </FieldDescription>
+              <ViewTransition name="form-footer-description">
+                <FieldDescription className="text-center">
+                  Already have an account? <Link href="/login">Sign in</Link>
+                </FieldDescription>
+              </ViewTransition>
             </FieldGroup>
           </FieldGroup>
         </form>
