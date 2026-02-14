@@ -6,15 +6,14 @@ const sessionsTable = pgTable("sessions", {
   createdAt: timestamp().defaultNow().notNull(),
   expiresAt: timestamp().notNull(),
   id: uuid().defaultRandom().primaryKey(),
-  ipAddress: inet().notNull(),
+  ipAddress: inet(),
   lastSeenAt: timestamp().notNull().defaultNow(),
   revokedAt: timestamp(),
-  token: text().notNull(),
   updatedAt: timestamp()
     .defaultNow()
     .notNull()
     .$onUpdate(() => new Date()),
-  userAgent: text().notNull(),
+  userAgent: text(),
   userId: uuid()
     .references(() => usersTable.id)
     .notNull(),

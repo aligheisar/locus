@@ -1,6 +1,9 @@
 "use client";
 
+import { ViewTransition } from "react";
 import Link from "next/link";
+import { Loader } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
 import { Card, CardTitle } from "@/components/ResponsiveCard";
@@ -34,11 +37,12 @@ const EmailForm = () => {
               name="email"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rhf-email">Email</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Email</FieldLabel>
                   <Input
                     {...field}
                     aria-invalid={fieldState.invalid}
-                    id="form-rhf-email"
+                    autoComplete="email"
+                    id={field.name}
                     placeholder="example@gmail.com"
                   />
                   {fieldState.invalid && (
@@ -48,7 +52,14 @@ const EmailForm = () => {
               )}
             />
             <FieldGroup>
-              <Button type="submit">Submit</Button>
+              <ViewTransition name="form-submit-button">
+                <Button disabled={form.formState.isSubmitting} type="submit">
+                  {form.formState.isSubmitting && (
+                    <HugeiconsIcon icon={Loader} />
+                  )}
+                  Next
+                </Button>
+              </ViewTransition>
               <FieldDescription className="text-center">
                 Already have an account? <Link href="/">Sign in</Link>
               </FieldDescription>

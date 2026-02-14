@@ -1,6 +1,12 @@
+import { Main } from "@/components/Main";
+
+import { SignupProvider } from "@/features/signup/context/signup-provider";
+
 const SignupLayout = ({ children }: LayoutProps<"/signup">) => {
   return (
-    <main className="justify-center-safe flex items-center">{children}</main>
+    <Main className="place-items-center">
+      <SignupProvider>{children}</SignupProvider>
+    </Main>
   );
 };
 

@@ -1,5 +1,7 @@
 import { pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 
+import { usersTable } from "@/db/schema/users";
+
 const profilesTable = pgTable("profiles", {
   createdAt: timestamp().defaultNow().notNull(),
   firstName: varchar({ length: 50 }),
@@ -9,6 +11,9 @@ const profilesTable = pgTable("profiles", {
     .defaultNow()
     .notNull()
     .$onUpdate(() => new Date()),
+  userId: uuid()
+    .references(() => usersTable.id)
+    .notNull(),
   username: varchar({ length: 60 }).notNull().unique(),
 });
 

@@ -9,31 +9,34 @@ import { showToast } from "@/lib/show-toast";
 import { signupFormSchema } from "@/features/signup/schemas/signup-form";
 import { useSignup } from "@/features/signup/hooks/use-signup";
 
-import { isEmailExist } from "@/actions/user";
+import { signupUserAction } from "@/actions/auth";
+import { isUsernameExist } from "@/actions/profile";
 
-const useEmailForm = () => {
+const useUsernameForm = () => {
   const router = useRouter();
   const { formData, updateData: updateFormData } = useSignup();
-  const emailSchema = v.pick(signupFormSchema, ["email"]);
-  type EmailFormSchema = v.InferOutput<typeof emailSchema>;
+  const usernameSchema = v.pick(signupFormSchema, ["username"]);
+  type UsernameFormSchema = v.InferOutput<typeof usernameSchema>;
 
   const form = useForm({
     defaultValues: {
-      email: formData.email ?? "",
+      username: formData.username ?? "",
     },
-    resolver: valibotResolver(emailSchema),
+    resolver: valibotResolver(usernameSchema),
   });
 
-  const handleFormSubmit = async (data: EmailFormSchema) => {
-    if (await isEmailExist(data.email)) {
-      showToast("error", "youAlreadyRegistered");
+  const handleFormSubmit = async (data: UsernameFormSchema) => {
+    if (await isUsernameExist(data.username)) {
+      showToast("error", "usernameTaken");
       return;
     }
 
     updateFormData(data);
 
+    await signupUserAction({ ...formData, username: data.username });
+
     startTransition(() => {
-      router.push("/signup/password");
+      router.push("/");
     });
   };
 
@@ -43,4 +46,4 @@ const useEmailForm = () => {
   };
 };
 
-export { useEmailForm };
+export { useUsernameForm };
