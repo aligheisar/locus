@@ -12,17 +12,18 @@ import { sessionsTable } from "@/db/schema/sessions";
 import type { AccountRepository } from "@/repositories/account.repository";
 import type { AuthRepository } from "@/repositories/auth.repository";
 import type { ProfileRepository } from "@/repositories/profile.repository";
-import { createUser } from "@/repositories/user";
+import type { UserRepository } from "@/repositories/user.repository";
 
 class AuthService {
   constructor(
     private authRepo: AuthRepository,
     private accountRepo: AccountRepository,
     private profileRepo: ProfileRepository,
+    private userRepo: UserRepository,
   ) {}
 
   async signup(user: SignupFormType) {
-    const [{ userId }] = await createUser(user.email);
+    const [{ userId }] = await this.userRepo.create(user.email);
     const hashedPassword = await hashPassword(user.password);
     await this.profileRepo.create(user.username, userId);
     await this.accountRepo.create(hashedPassword, userId);
@@ -56,6 +57,13 @@ class AuthService {
 
   async isUsernameExist(username: string) {
     const result = await this.profileRepo.findByUsername(username);
+
+    if (result.length) return true;
+    return false;
+  }
+
+  async isEmailExist(email: string) {
+    const result = await this.userRepo.findByEmail(email);
 
     if (result.length) return true;
     return false;

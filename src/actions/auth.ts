@@ -29,4 +29,14 @@ const isUsernameExist = async (username: string) => {
   return await authService.isUsernameExist(username);
 };
 
-export { signupUserAction, logoutUserAction, loginUserAction, isUsernameExist };
+const isEmailExist = async (email: string) => {
+  return await authService.isEmailExist(email);
+};
+
+export {
+  signupUserAction,
+  logoutUserAction,
+  loginUserAction,
+  isUsernameExist,
+  isEmailExist,
+};
