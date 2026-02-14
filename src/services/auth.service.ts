@@ -10,11 +10,13 @@ import type { SignupFormType } from "@/features/signup/schemas/signup-form";
 import { db } from "@/db";
 import { sessionsTable } from "@/db/schema/sessions";
 import { createAccount } from "@/repositories/account";
-import { findUserByIdentity } from "@/repositories/auth";
+import type { AuthRepository } from "@/repositories/auth.repository";
 import { createProfile } from "@/repositories/profile";
 import { createUser } from "@/repositories/user";
 
 class AuthService {
+  constructor(private authRepo: AuthRepository) {}
+
   async signup(user: SignupFormType) {
     const [{ userId }] = await createUser(user.email);
     const hashedPassword = await hashPassword(user.password);
@@ -24,7 +26,7 @@ class AuthService {
   }
 
   async login(input: LoginFormType) {
-    const user = await findUserByIdentity(input.emailOrUsername);
+    const user = await this.authRepo.findUserByIdentity(input.emailOrUsername);
     if (!user || !user.password) return;
 
     const isValid = await verifyPassword(user.password, input.password);
