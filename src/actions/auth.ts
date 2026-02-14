@@ -2,34 +2,30 @@
 
 import { safeParse } from "valibot";
 
-import {
-  type LoginFormType,
-  loginFormSchema,
-} from "@/features/login/schemas/login-form";
-import {
-  type SignupFormType,
-  signupFormSchema,
-} from "@/features/signup/schemas/signup-form";
+import { loginFormSchema } from "@/features/login/schemas/login-form";
+import { signupFormSchema } from "@/features/signup/schemas/signup-form";
 
-import { loginUser } from "@/services/auth";
-import { logoutUser, signupUser } from "@/services/user";
+import { AuthService } from "@/services/auth.service";
 
-const signupUserAction = async (user: SignupFormType | unknown) => {
+const signupUserAction = async (user: unknown) => {
   const validatedData = safeParse(signupFormSchema, user);
   if (!validatedData.success) return;
 
-  await signupUser(validatedData.output);
+  const authService = new AuthService();
+  await authService.signup(validatedData.output);
 };
 
-const loginUserAction = async (user: LoginFormType | unknown) => {
+const loginUserAction = async (user: unknown) => {
   const validatedData = safeParse(loginFormSchema, user);
   if (!validatedData.success) return;
 
-  await loginUser(validatedData.output);
+  const authService = new AuthService();
+  await authService.login(validatedData.output);
 };
 
 const logoutUserAction = async () => {
-  await logoutUser();
+  const authService = new AuthService();
+  await authService.logout();
 };
 
 export { signupUserAction, logoutUserAction, loginUserAction };
