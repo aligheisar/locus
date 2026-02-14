@@ -1,5 +1,6 @@
 "use client";
 
+import { ViewTransition } from "react";
 import Link from "next/link";
 import { Loader } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -74,13 +75,19 @@ const LoginForm = () => {
               />
             </FieldGroup>
             <FieldGroup>
-              <Button disabled={form.formState.isSubmitting} type="submit">
-                {form.formState.isSubmitting && <HugeiconsIcon icon={Loader} />}
-                Next
-              </Button>
-              <FieldDescription className="text-center">
-                Don't have an account? <Link href="/signup">Sign up</Link>
-              </FieldDescription>
+              <ViewTransition name="form-submit-button">
+                <Button disabled={form.formState.isSubmitting} type="submit">
+                  {form.formState.isSubmitting && (
+                    <HugeiconsIcon icon={Loader} />
+                  )}
+                  Next
+                </Button>
+              </ViewTransition>
+              <ViewTransition name="form-footer-description">
+                <FieldDescription className="text-center">
+                  Don't have an account? <Link href="/signup">Sign up</Link>
+                </FieldDescription>
+              </ViewTransition>
             </FieldGroup>
           </FieldGroup>
         </form>
