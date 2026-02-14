@@ -9,19 +9,22 @@ import type { SignupFormType } from "@/features/signup/schemas/signup-form";
 
 import { db } from "@/db";
 import { sessionsTable } from "@/db/schema/sessions";
-import { createAccount } from "@/repositories/account";
+import type { AccountRepository } from "@/repositories/account.repository";
 import type { AuthRepository } from "@/repositories/auth.repository";
 import { createProfile } from "@/repositories/profile";
 import { createUser } from "@/repositories/user";
 
 class AuthService {
-  constructor(private authRepo: AuthRepository) {}
+  constructor(
+    private authRepo: AuthRepository,
+    private accountRepo: AccountRepository,
+  ) {}
 
   async signup(user: SignupFormType) {
     const [{ userId }] = await createUser(user.email);
     const hashedPassword = await hashPassword(user.password);
     await createProfile(user.username, userId);
-    await createAccount(hashedPassword, userId);
+    await this.accountRepo.create(hashedPassword, userId);
     await createSession(userId);
   }
 
