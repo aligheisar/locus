@@ -1,18 +1,13 @@
-import { cookies } from "next/headers";
-import { eq } from "drizzle-orm";
-
 import { hashPassword, verifyPassword } from "@/lib/password";
-import { createSession, verifySession } from "@/lib/session";
 
 import type { LoginFormType } from "@/features/login/schemas/login-form";
 import type { SignupFormType } from "@/features/signup/schemas/signup-form";
 
-import { db } from "@/db";
-import { sessionsTable } from "@/db/schema/sessions";
 import type { AccountRepository } from "@/repositories/account.repository";
 import type { AuthRepository } from "@/repositories/auth.repository";
 import type { ProfileRepository } from "@/repositories/profile.repository";
 import type { UserRepository } from "@/repositories/user.repository";
+import type { SessionService } from "@/services/session.service";
 
 class AuthService {
   constructor(
@@ -20,37 +15,42 @@ class AuthService {
     private accountRepo: AccountRepository,
     private profileRepo: ProfileRepository,
     private userRepo: UserRepository,
+    private sessionService: SessionService,
   ) {}
 
-  async signup(user: SignupFormType) {
+  async signup(
+    user: SignupFormType,
+    meta: { userAgent: string | null; ipAddress: string | null },
+  ) {
     const [{ userId }] = await this.userRepo.create(user.email);
     const hashedPassword = await hashPassword(user.password);
     await this.profileRepo.create(user.username, userId);
     await this.accountRepo.create(hashedPassword, userId);
-    await createSession(userId);
+    const session = await this.sessionService.create(userId, meta);
+
+    return session;
   }
 
-  async login(input: LoginFormType) {
+  async login(
+    input: LoginFormType,
+    meta: { userAgent: string | null; ipAddress: string | null },
+  ) {
     const user = await this.authRepo.findUserByIdentity(input.emailOrUsername);
     if (!user || !user.password) return;
 
     const isValid = await verifyPassword(user.password, input.password);
     if (!isValid) return;
 
-    await createSession(user.id);
+    const session = await this.sessionService.create(user.id, meta);
+
+    return session;
   }
 
-  async logout() {
-    const session = await verifySession();
+  async logout(rawSession: string) {
+    const session = await this.sessionService.verify(rawSession);
     if (!session) return { error: "no-session", success: false };
 
-    await db
-      .update(sessionsTable)
-      .set({ revokedAt: new Date() })
-      .where(eq(sessionsTable.id, session.sessionId));
-
-    const cookieStore = await cookies();
-    cookieStore.delete("session");
+    this.sessionService.revoke(session.sessionId);
 
     return { success: true };
   }
