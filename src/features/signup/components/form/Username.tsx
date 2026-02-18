@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 
 import { useSignup } from "@/features/signup/hooks/use-signup";
 import { useUsernameForm } from "@/features/signup/hooks/use-username-form";
+import { StepCounter } from "@/features/signup/components/StepCounter";
 
 const UsernameForm = () => {
   const { formData } = useSignup();
@@ -33,12 +34,15 @@ const UsernameForm = () => {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Choose a username</CardTitle>
-        <CardDescription>
-          Pick a unique username that represents you. This will be visible to
-          other users.
-        </CardDescription>
+      <CardHeader className="grid-cols-[auto_1fr]">
+        <div className="grid auto-rows-auto gap-1">
+          <CardTitle>Choose a username</CardTitle>
+          <CardDescription>
+            Pick a unique username that represents you. This will be visible to
+            other users.
+          </CardDescription>
+        </div>
+        <StepCounter current={3} total={3} />
       </CardHeader>
       <CardContent>
         <form onSubmit={form.handleSubmit(handleFormSubmit)}>

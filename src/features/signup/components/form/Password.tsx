@@ -17,6 +17,7 @@ import { PasswordInput } from "@/components/ui/password-input";
 
 import { usePasswordForm } from "@/features/signup/hooks/use-password-form";
 import { useSignup } from "@/features/signup/hooks/use-signup";
+import { StepCounter } from "@/features/signup/components/StepCounter";
 
 const PasswordForm = () => {
   const router = useRouter();
@@ -31,11 +32,14 @@ const PasswordForm = () => {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Create your password</CardTitle>
-        <CardDescription>
-          Choose a strong password to keep your account secure.
-        </CardDescription>
+      <CardHeader className="grid-cols-[auto_1fr]">
+        <div className="grid auto-rows-auto gap-1">
+          <CardTitle>Create your password</CardTitle>
+          <CardDescription>
+            Choose a strong password to keep your account secure.
+          </CardDescription>
+        </div>
+        <StepCounter current={2} total={3} />
       </CardHeader>
       <CardContent>
         <form onSubmit={form.handleSubmit(handleFormSubmit)}>
