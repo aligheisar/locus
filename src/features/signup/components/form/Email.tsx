@@ -19,15 +19,21 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { useEmailForm } from "@/features/signup/hooks/use-email-form";
+import { StepCounter } from "@/features/signup/components/StepCounter";
 
 const EmailForm = () => {
   const { form, handleFormSubmit } = useEmailForm();
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Create an account</CardTitle>
-        <CardDescription>Start creating your account for free.</CardDescription>
+      <CardHeader className="grid-cols-[auto_1fr]">
+        <div className="grid auto-rows-auto gap-1">
+          <CardTitle>Create an account</CardTitle>
+          <CardDescription>
+            Start creating your account for free.
+          </CardDescription>
+        </div>
+        <StepCounter current={1} total={3} />
       </CardHeader>
       <CardContent>
         <form onSubmit={form.handleSubmit(handleFormSubmit)}>
