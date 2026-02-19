@@ -1,5 +1,3 @@
-import { hashPassword, verifyPassword } from "@/lib/password";
-
 import type { LoginFormType } from "@/features/login/schemas/login-form";
 import type { SignupFormType } from "@/features/signup/schemas/signup-form";
 
@@ -7,6 +5,7 @@ import type { AccountRepository } from "@/repositories/account.repository";
 import type { AuthRepository } from "@/repositories/auth.repository";
 import type { ProfileRepository } from "@/repositories/profile.repository";
 import type { UserRepository } from "@/repositories/user.repository";
+import type { PasswordService } from "@/services/password.service";
 import type { SessionService } from "@/services/session.service";
 
 class AuthService {
@@ -16,6 +15,7 @@ class AuthService {
     private profileRepo: ProfileRepository,
     private userRepo: UserRepository,
     private sessionService: SessionService,
+    private passwordService: PasswordService,
   ) {}
 
   async signup(
@@ -23,7 +23,7 @@ class AuthService {
     meta: { userAgent: string | null; ipAddress: string | null },
   ) {
     const [{ userId }] = await this.userRepo.create(user.email);
-    const hashedPassword = await hashPassword(user.password);
+    const hashedPassword = await this.passwordService.hash(user.password);
     await this.profileRepo.create(user.username, userId);
     await this.accountRepo.create(hashedPassword, userId);
     const session = await this.sessionService.create(userId, meta);
@@ -38,7 +38,10 @@ class AuthService {
     const user = await this.authRepo.findUserByIdentity(input.emailOrUsername);
     if (!user || !user.password) return;
 
-    const isValid = await verifyPassword(user.password, input.password);
+    const isValid = await this.passwordService.verify(
+      user.password,
+      input.password,
+    );
     if (!isValid) return;
 
     const session = await this.sessionService.create(user.id, meta);
