@@ -18,6 +18,21 @@ const signupFormSchema = v.object({
   ),
 });
 
-type SignupFormType = v.InferOutput<typeof signupFormSchema>;
+const getUsernameFormSchema = (checker: (input: string) => Promise<boolean>) =>
+  v.objectAsync({
+    username: v.pipeAsync(
+      v.string(),
+      v.minLength(4, "Username must be at least 4 char long."),
+      v.checkAsync(checker, "Username is taken."),
+    ),
+  });
 
-export { signupFormSchema, type SignupFormType };
+type SignupFormType = v.InferOutput<typeof signupFormSchema>;
+type UsernameFormType = v.InferOutput<ReturnType<typeof getUsernameFormSchema>>;
+
+export {
+  signupFormSchema,
+  getUsernameFormSchema,
+  type SignupFormType,
+  type UsernameFormType,
+};
