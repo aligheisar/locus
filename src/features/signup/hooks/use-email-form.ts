@@ -9,7 +9,7 @@ import { showToast } from "@/lib/show-toast";
 import { signupFormSchema } from "@/features/signup/schemas/signup-form";
 import { useSignup } from "@/features/signup/hooks/use-signup";
 
-import { isEmailExist } from "@/actions/user";
+import { isEmailExist } from "@/actions/auth";
 
 const useEmailForm = () => {
   const router = useRouter();
