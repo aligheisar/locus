@@ -1,6 +1,6 @@
 import { pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 
-import { usersTable } from "@/db/schema/users";
+import { usersTable } from "@/server/db/schema/users";
 
 const profilesTable = pgTable("profiles", {
   createdAt: timestamp().defaultNow().notNull(),

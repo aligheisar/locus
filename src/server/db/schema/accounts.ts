@@ -1,6 +1,6 @@
 import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
-import { usersTable } from "@/db/schema/users";
+import { usersTable } from "@/server/db/schema/users";
 
 const accountsTable = pgTable("accounts", {
   createdAt: timestamp().defaultNow().notNull(),

@@ -4,13 +4,16 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { asyncDebounce } from "@tanstack/pacer";
 import { useForm } from "react-hook-form";
 
+import { useSignup } from "@/features/signup/hooks/use-signup";
+
+import {
+  isUsernameExist,
+  signupUserAction,
+} from "@/server/actions/auth.action";
 import {
   getUsernameFormSchema,
   type UsernameFormType,
-} from "@/features/signup/schemas/signup-form";
-import { useSignup } from "@/features/signup/hooks/use-signup";
-
-import { isUsernameExist, signupUserAction } from "@/actions/auth";
+} from "@/shared/schemas/signup-form";
 
 const useUsernameForm = () => {
   const router = useRouter();

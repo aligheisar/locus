@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 
-import { db } from "@/db";
-import { usersTable } from "@/db/schema/users";
+import { db } from "@/server/db";
+import { usersTable } from "@/server/db/schema/users";
 
 class UserRepository {
   async create(email: string) {

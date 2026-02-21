@@ -1,4 +1,4 @@
-import type { SignupFormType } from "@/features/signup/schemas/signup-form";
+import type { SignupFormType } from "@/shared/schemas/signup-form";
 
 type ContextValues = {
   formData: Partial<SignupFormType>;

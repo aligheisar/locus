@@ -4,8 +4,9 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useForm } from "react-hook-form";
 import * as v from "valibot";
 
-import { signupFormSchema } from "@/features/signup/schemas/signup-form";
 import { useSignup } from "@/features/signup/hooks/use-signup";
+
+import { signupFormSchema } from "@/shared/schemas/signup-form";
 
 const usePasswordForm = () => {
   const router = useRouter();

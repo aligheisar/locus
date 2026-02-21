@@ -1,9 +1,9 @@
 import { eq, or } from "drizzle-orm";
 
-import { db } from "@/db";
-import { accountsTable } from "@/db/schema/accounts";
-import { profilesTable } from "@/db/schema/profiles";
-import { usersTable } from "@/db/schema/users";
+import { db } from "@/server/db";
+import { accountsTable } from "@/server/db/schema/accounts";
+import { profilesTable } from "@/server/db/schema/profiles";
+import { usersTable } from "@/server/db/schema/users";
 
 class AuthRepository {
   async findUserByIdentity(identifier: string) {

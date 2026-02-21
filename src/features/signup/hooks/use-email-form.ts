@@ -6,10 +6,10 @@ import * as v from "valibot";
 
 import { showToast } from "@/lib/show-toast";
 
-import { signupFormSchema } from "@/features/signup/schemas/signup-form";
 import { useSignup } from "@/features/signup/hooks/use-signup";
 
-import { isEmailExist } from "@/actions/auth";
+import { isEmailExist } from "@/server/actions/auth.action";
+import { signupFormSchema } from "@/shared/schemas/signup-form";
 
 const useEmailForm = () => {
   const router = useRouter();
