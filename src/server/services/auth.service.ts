@@ -1,12 +1,11 @@
-import type { LoginFormType } from "@/features/login/schemas/login-form";
-import type { SignupFormType } from "@/features/signup/schemas/signup-form";
-
-import type { AccountRepository } from "@/repositories/account.repository";
-import type { AuthRepository } from "@/repositories/auth.repository";
-import type { ProfileRepository } from "@/repositories/profile.repository";
-import type { UserRepository } from "@/repositories/user.repository";
-import type { PasswordService } from "@/services/password.service";
-import type { SessionService } from "@/services/session.service";
+import type { AccountRepository } from "@/server/repositories/account.repository";
+import type { AuthRepository } from "@/server/repositories/auth.repository";
+import type { ProfileRepository } from "@/server/repositories/profile.repository";
+import type { UserRepository } from "@/server/repositories/user.repository";
+import type { PasswordService } from "@/server/services/password.service";
+import type { SessionService } from "@/server/services/session.service";
+import type { LoginFormType } from "@/shared/schemas/login-form";
+import type { SignupFormType } from "@/shared/schemas/signup-form";
 
 class AuthService {
   constructor(

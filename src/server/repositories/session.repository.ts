@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 
-import { db } from "@/db";
-import { sessionsTable } from "@/db/schema/sessions";
+import { db } from "@/server/db";
+import { sessionsTable } from "@/server/db/schema/sessions";
 
 class SessionRepository {
   async create(values: typeof sessionsTable.$inferInsert) {

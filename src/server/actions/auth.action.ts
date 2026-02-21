@@ -3,10 +3,9 @@
 import { cookies, headers } from "next/headers";
 import { safeParse } from "valibot";
 
-import { loginFormSchema } from "@/features/login/schemas/login-form";
-import { signupFormSchema } from "@/features/signup/schemas/signup-form";
-
-import { authService } from "@/containers/auth.container";
+import { authService } from "@/server/containers/auth.container";
+import { loginFormSchema } from "@/shared/schemas/login-form";
+import { signupFormSchema } from "@/shared/schemas/signup-form";
 
 const signupUserAction = async (user: unknown) => {
   const validatedData = safeParse(signupFormSchema, user);

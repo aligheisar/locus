@@ -1,5 +1,5 @@
-import type { SessionRepository } from "@/repositories/session.repository";
-import type { TokenService } from "@/services/token.service";
+import type { SessionRepository } from "@/server/repositories/session.repository";
+import type { TokenService } from "@/server/services/token.service";
 
 class SessionService {
   constructor(

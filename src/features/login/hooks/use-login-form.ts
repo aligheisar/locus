@@ -2,12 +2,11 @@ import { useRouter } from "next/navigation";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useForm } from "react-hook-form";
 
+import { loginUserAction } from "@/server/actions/auth.action";
 import {
   type LoginFormType,
   loginFormSchema,
-} from "@/features/login/schemas/login-form";
-
-import { loginUserAction } from "@/actions/auth";
+} from "@/shared/schemas/login-form";
 
 const useLoginForm = () => {
   const router = useRouter();
