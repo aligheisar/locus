@@ -4,6 +4,9 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { asyncDebounce } from "@tanstack/pacer";
 import { useForm } from "react-hook-form";
 
+import { showToast } from "@/lib/show-toast";
+import { handleError } from "@/utils/error";
+
 import { useSignup } from "@/features/signup/hooks/use-signup";
 
 import {
@@ -35,10 +38,22 @@ const useUsernameForm = () => {
   const handleFormSubmit = async (data: UsernameFormType) => {
     updateFormData(data);
 
-    await signupUserAction({ ...formData, username: data.username });
+    const [error] = await signupUserAction({
+      ...formData,
+      username: data.username,
+    });
 
-    startTransition(() => {
-      router.push("/");
+    if (!error) {
+      startTransition(() => {
+        router.push("/");
+      });
+
+      return;
+    }
+
+    handleError(error.reason, {
+      INVALID_INPUT: () => showToast("error", "invalidInput"),
+      UNEXPECTED_ERROR: () => showToast("error", "somethingWentWrong"),
     });
   };
 
