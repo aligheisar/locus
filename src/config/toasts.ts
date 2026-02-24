@@ -2,6 +2,10 @@ import type { ToastCode, ToastType } from "@/types/toast";
 
 const toastMessages = {
   error: {
+    invalidCredentials: "Invalid credentials.",
+    invalidInput: "Inputs are invalid.",
+    somethingWentWrong: "Something went wrong.",
+    userNotExist: "User not exist. Please login.",
     usernameTaken: "This username is taken.",
     youAlreadyRegistered: "You already registered.",
   },
