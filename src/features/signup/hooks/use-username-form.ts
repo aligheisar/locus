@@ -32,6 +32,7 @@ const useUsernameForm = () => {
     defaultValues: {
       username: formData.username ?? "",
     },
+    mode: "onChange",
     resolver: valibotResolver(usernameSchema),
   });
 
