@@ -1,11 +1,16 @@
+import { safeParse } from "valibot";
+
+import { err, ok } from "@/utils/error";
+
 import type { AccountRepository } from "@/server/repositories/account.repository";
 import type { AuthRepository } from "@/server/repositories/auth.repository";
 import type { ProfileRepository } from "@/server/repositories/profile.repository";
 import type { UserRepository } from "@/server/repositories/user.repository";
 import type { PasswordService } from "@/server/services/password.service";
 import type { SessionService } from "@/server/services/session.service";
-import type { LoginFormType } from "@/shared/schemas/login-form";
-import type { SignupFormType } from "@/shared/schemas/signup-form";
+import { loginFormSchema } from "@/shared/schemas/login-form";
+import { requestMetaSchema } from "@/shared/schemas/request-meta";
+import { signupFormSchema } from "@/shared/schemas/signup-form";
 
 class AuthService {
   constructor(
@@ -17,44 +22,66 @@ class AuthService {
     private passwordService: PasswordService,
   ) {}
 
-  async signup(
-    user: SignupFormType,
-    meta: { userAgent: string | null; ipAddress: string | null },
-  ) {
-    const [{ userId }] = await this.userRepo.create(user.email);
-    const hashedPassword = await this.passwordService.hash(user.password);
-    await this.profileRepo.create(user.username, userId);
-    await this.accountRepo.create(hashedPassword, userId);
-    const session = await this.sessionService.create(userId, meta);
+  async signup(user: unknown, meta: unknown) {
+    const validateUser = safeParse(signupFormSchema, user);
+    if (!validateUser.success) return err({ reason: "INVALID_INPUT" });
+    const validatedUser = validateUser.output;
 
-    return session;
+    const validateMeta = safeParse(requestMetaSchema, meta);
+    if (!validateMeta.success) return err({ reason: "INVALID_INPUT" });
+    const validatedMeta = validateMeta.output;
+
+    try {
+      const [{ userId }] = await this.userRepo.create(validatedUser.email);
+      const hashedPassword = await this.passwordService.hash(
+        validatedUser.password,
+      );
+      await this.profileRepo.create(validatedUser.username, userId);
+      await this.accountRepo.create(hashedPassword, userId);
+      const session = await this.sessionService.create(userId, validatedMeta);
+
+      return ok(session);
+    } catch {
+      return err({ reason: "UNEXPECTED_ERROR" });
+    }
   }
 
-  async login(
-    input: LoginFormType,
-    meta: { userAgent: string | null; ipAddress: string | null },
-  ) {
-    const user = await this.authRepo.findUserByIdentity(input.emailOrUsername);
-    if (!user || !user.password) return;
+  async login(inputUser: unknown, meta: unknown) {
+    const validateUser = safeParse(loginFormSchema, inputUser);
+    if (!validateUser.success) return err({ reason: "INVALID_INPUT" });
+    const validatedUser = validateUser.output;
 
-    const isValid = await this.passwordService.verify(
-      user.password,
-      input.password,
-    );
-    if (!isValid) return;
+    const validateMeta = safeParse(requestMetaSchema, meta);
+    if (!validateMeta.success) return err({ reason: "INVALID_INPUT" });
+    const validatedMeta = validateMeta.output;
 
-    const session = await this.sessionService.create(user.id, meta);
+    try {
+      const user = await this.authRepo.findUserByIdentity(
+        validatedUser.emailOrUsername,
+      );
+      if (!user || !user.password) return err({ reason: "USER_NOT_EXIST" });
 
-    return session;
+      const isValid = await this.passwordService.verify(
+        user.password,
+        validatedUser.password,
+      );
+      if (!isValid) return err({ reason: "INVALID_CREDENTIALS" });
+
+      const session = await this.sessionService.create(user.id, validatedMeta);
+
+      return ok(session);
+    } catch {
+      return err({ reason: "UNEXPECTED_ERROR" });
+    }
   }
 
   async logout(rawSession: string) {
     const session = await this.sessionService.verify(rawSession);
-    if (!session) return { error: "no-session", success: false };
+    if (!session) return err({ reason: "INVALID_SESSION" });
 
     this.sessionService.revoke(session.sessionId);
 
-    return { success: true };
+    return ok(null);
   }
 
   async isUsernameExist(username: string) {
