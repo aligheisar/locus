@@ -10,6 +10,7 @@
         "@hookform/resolvers": "^5.2.2",
         "@hugeicons/core-free-icons": "^3.1.1",
         "@hugeicons/react": "^1.1.4",
+        "@route-map/react": "^0.1.0",
         "@t3-oss/env-nextjs": "^0.13.10",
         "@tanstack/pacer": "^0.19.0",
         "argon2": "^0.44.0",
@@ -332,6 +333,8 @@
     "@open-draft/until": ["@open-draft/until@2.1.0", "", {}, "sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg=="],
 
     "@phc/format": ["@phc/format@1.0.0", "", {}, "sha512-m7X9U6BG2+J+R1lSOdCiITLLrxm+cWlNI3HUFA92oLO77ObGNzaKdh8pMLqdZcshtkKuV84olNNXDfMc4FezBQ=="],
+
+    "@route-map/react": ["@route-map/react@0.1.0", "", { "peerDependencies": { "react": ">=18.0.0" } }, "sha512-Em2fw4nIXyW0G81sdxSwd6AzZUpOzxHpD1Ivk5KZBoJWciNO+CG5fghkasw4zDKiZekgBaQkASpYoGDe9rb4eA=="],
 
     "@sec-ant/readable-stream": ["@sec-ant/readable-stream@0.4.1", "", {}, "sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg=="],
 
