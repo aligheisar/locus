@@ -21,17 +21,20 @@ export function ModeSwitcher() {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={(props) => {
-          return <Button size="icon" variant="outline" {...props} />;
+          return <Button variant="outline" {...props} />;
         }}
       >
-        <HugeiconsIcon
-          className="size-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
-          icon={Sun}
-        />
-        <HugeiconsIcon
-          className="absolute size-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
-          icon={Moon}
-        />
+        Theme
+        <div className="relative">
+          <HugeiconsIcon
+            className="size-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
+            icon={Sun}
+          />
+          <HugeiconsIcon
+            className="absolute top-0 size-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
+            icon={Moon}
+          />
+        </div>
         <span className="sr-only">Toggle theme</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
