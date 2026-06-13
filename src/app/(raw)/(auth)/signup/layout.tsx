@@ -1,12 +1,12 @@
-import { Main } from "@/components/Main";
+import { ViewTransition } from "react";
 
 import { SignupProvider } from "@/features/signup/context/signup-provider";
 
 const SignupLayout = ({ children }: LayoutProps<"/signup">) => {
   return (
-    <Main className="place-items-center">
+    <ViewTransition name="login-signup-forms">
       <SignupProvider>{children}</SignupProvider>
-    </Main>
+    </ViewTransition>
   );
 };
 
