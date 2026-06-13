@@ -1,3 +1,5 @@
+import { err, ok } from "@/utils/error";
+
 import type { SessionRepository } from "@/server/repositories/session.repository";
 import type { TokenService } from "@/server/services/token.service";
 
@@ -16,34 +18,70 @@ class SessionService {
   ) {
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
-    const [{ sessionId }] = await this.sessionRepo.create({
-      expiresAt,
-      ipAddress,
-      userAgent,
-      userId,
-    });
+    try {
+      const [{ sessionId }] = await this.sessionRepo.create({
+        expiresAt,
+        ipAddress,
+        userAgent,
+        userId,
+      });
 
-    const session = await this.tokenService.encrypt({
-      sessionId,
-    });
+      const session = await this.tokenService.encrypt({
+        sessionId,
+      });
 
-    return session;
+      return ok(session);
+    } catch {
+      return err({ reason: "UNEXPECTED_ERROR" });
+    }
   }
 
   async verify(encryptedSession: string) {
     const session = await this.tokenService.decrypt(encryptedSession);
 
     if (!session) {
-      return null;
+      return err({ reason: "INVALID_SESSION" });
     }
 
-    return {
+    return ok({
       sessionId: session.sessionId as string,
-    };
+    });
   }
 
   async revoke(sessionId: string) {
-    return this.sessionRepo.revoke(sessionId);
+    try {
+      await this.sessionRepo.revoke(sessionId);
+      return ok(null);
+    } catch {
+      return err({ reason: "UNEXPECTED_ERROR" });
+    }
+  }
+
+  async findActiveSessions(userId: string) {
+    try {
+      const sessions = await this.sessionRepo.findActiveSessions(userId);
+      return ok(sessions);
+    } catch {
+      return err({ reason: "UNEXPECTED_ERROR" });
+    }
+  }
+
+  async findRevokedSessions(userId: string) {
+    try {
+      const sessions = await this.sessionRepo.findRevokedSessions(userId);
+      return ok(sessions);
+    } catch {
+      return err({ reason: "UNEXPECTED_ERROR" });
+    }
+  }
+
+  async findSession(sessionId: string) {
+    try {
+      const sessions = await this.sessionRepo.findSession(sessionId);
+      return ok(sessions);
+    } catch {
+      return err({ reason: "UNEXPECTED_ERROR" });
+    }
   }
 }
 

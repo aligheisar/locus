@@ -25,7 +25,14 @@ const useEmailForm = () => {
   });
 
   const handleFormSubmit = async (data: EmailFormSchema) => {
-    if (await isEmailExist(data.email)) {
+    const [error, flag] = await isEmailExist(data.email);
+
+    if (error) {
+      showToast("error", "somethingWentWrong");
+      return;
+    }
+
+    if (flag) {
       showToast("error", "youAlreadyRegistered");
       return;
     }

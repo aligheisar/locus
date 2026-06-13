@@ -38,7 +38,15 @@ class AuthService {
       );
       await this.profileRepo.create(validatedUser.username, userId);
       await this.accountRepo.create(hashedPassword, userId);
-      const session = await this.sessionService.create(userId, validatedMeta);
+      const [error, session] = await this.sessionService.create(
+        userId,
+        validatedMeta,
+      );
+
+      if (error) {
+        const reason = error.reason;
+        return err({ reason });
+      }
 
       return ok(session);
     } catch {
@@ -67,7 +75,15 @@ class AuthService {
       );
       if (!isValid) return err({ reason: "INVALID_CREDENTIALS" });
 
-      const session = await this.sessionService.create(user.id, validatedMeta);
+      const [error, session] = await this.sessionService.create(
+        user.id,
+        validatedMeta,
+      );
+
+      if (error) {
+        const reason = error.reason;
+        return err({ reason });
+      }
 
       return ok(session);
     } catch {
@@ -76,26 +92,42 @@ class AuthService {
   }
 
   async logout(rawSession: string) {
-    const session = await this.sessionService.verify(rawSession);
-    if (!session) return err({ reason: "INVALID_SESSION" });
+    const [error, session] = await this.sessionService.verify(rawSession);
 
-    this.sessionService.revoke(session.sessionId);
+    if (error) {
+      const reason = error.reason;
+      return err({ reason });
+    }
+
+    const [revokeError] = await this.sessionService.revoke(session.sessionId);
+
+    if (revokeError) {
+      const reason = revokeError.reason;
+      return err({ reason });
+    }
 
     return ok(null);
   }
 
   async isUsernameExist(username: string) {
-    const result = await this.profileRepo.findByUsername(username);
-
-    if (result.length) return true;
-    return false;
+    try {
+      const result = await this.profileRepo.findByUsername(username);
+      if (result.length) return ok(true);
+      return ok(false);
+    } catch {
+      return err({ reason: "UNEXPECTED_ERROR" });
+    }
   }
 
   async isEmailExist(email: string) {
-    const result = await this.userRepo.findByEmail(email);
+    try {
+      const result = await this.userRepo.findByEmail(email);
 
-    if (result.length) return true;
-    return false;
+      if (result.length) return ok(true);
+      return ok(false);
+    } catch {
+      return err({ reason: "UNEXPECTED_ERROR" });
+    }
   }
 }
 

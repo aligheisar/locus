@@ -24,9 +24,16 @@ const useUsernameForm = () => {
 
   const debouncedChecker = asyncDebounce(isUsernameExist, { wait: 200 });
 
-  const usernameSchema = getUsernameFormSchema(
-    async (input) => !(await debouncedChecker(input)),
-  );
+  const usernameSchema = getUsernameFormSchema(async (input) => {
+    const result = await debouncedChecker(input);
+
+    if (!result || result[0]) {
+      showToast("error", "somethingWentWrong");
+      return false;
+    }
+
+    return !result[1];
+  });
 
   const form = useForm({
     defaultValues: {
