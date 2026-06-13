@@ -15,22 +15,22 @@ const signupUserAction = async (user: unknown) => {
 
   const [error, session] = await authService.signup(user, meta);
 
-  if (!error) {
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-    const cookieStore = await cookies();
-    cookieStore.set("session", session, {
-      expires: expiresAt,
-      httpOnly: true,
-      path: "/",
-      sameSite: "lax",
-      secure: true,
-    });
-
-    return ok(null);
+  if (error) {
+    const reason = error.reason;
+    return err({ reason });
   }
 
-  const reason = error.reason;
-  return err({ reason });
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+  const cookieStore = await cookies();
+  cookieStore.set("session", session, {
+    expires: expiresAt,
+    httpOnly: true,
+    path: "/",
+    sameSite: "lax",
+    secure: true,
+  });
+
+  return ok(null);
 };
 
 const loginUserAction = async (user: unknown) => {
@@ -78,11 +78,25 @@ const logoutUserAction = async () => {
 };
 
 const isUsernameExist = async (username: string) => {
-  return await authService.isUsernameExist(username);
+  const [error, flag] = await authService.isUsernameExist(username);
+
+  if (error) {
+    const reason = error.reason;
+    return err({ reason });
+  }
+
+  return ok(flag);
 };
 
 const isEmailExist = async (email: string) => {
-  return await authService.isEmailExist(email);
+  const [error, flag] = await authService.isEmailExist(email);
+
+  if (error) {
+    const reason = error.reason;
+    return err({ reason });
+  }
+
+  return ok(flag);
 };
 
 export {
