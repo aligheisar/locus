@@ -5,7 +5,7 @@ const toastMessages = {
     invalidCredentials: "Invalid credentials.",
     invalidInput: "Inputs are invalid.",
     somethingWentWrong: "Something went wrong.",
-    userNotExist: "User not exist. Please login.",
+    userNotExist: "User not exist. Please signup.",
     usernameTaken: "This username is taken.",
     youAlreadyRegistered: "You already registered.",
   },
