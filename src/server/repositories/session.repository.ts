@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq, gt, isNull } from "drizzle-orm";
 
 import { db } from "@/server/db";
 import { sessionsTable } from "@/server/db/schema/sessions";
@@ -16,6 +16,37 @@ class SessionRepository {
       .update(sessionsTable)
       .set({ revokedAt: new Date() })
       .where(eq(sessionsTable.id, sessionId));
+  }
+
+  async findActiveSessions(userId: string) {
+    return db
+      .select()
+      .from(sessionsTable)
+      .where(
+        and(
+          eq(sessionsTable.userId, userId),
+          isNull(sessionsTable.revokedAt),
+          gt(sessionsTable.expiresAt, new Date(Date.now())),
+        ),
+      );
+  }
+
+  async findRevokedSessions(userId: string) {
+    return db
+      .select()
+      .from(sessionsTable)
+      .where(
+        and(eq(sessionsTable.userId, userId), isNull(sessionsTable.revokedAt)),
+      );
+  }
+
+  async findSession(sessionId: string) {
+    return db
+      .select()
+      .from(sessionsTable)
+      .where(eq(sessionsTable.id, sessionId))
+      .limit(1)
+      .then((r) => r[0] ?? null);
   }
 }
 
