@@ -33,6 +33,7 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        nav: "hover:bg-muted data-[active=true]:bg-foreground data-[active=partial]:bg-foreground/60 data-[active=true]:text-background data-[active=partial]:text-background hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground data-[active=partial]:hover:bg-accent-foreground  data-[active=partial]:dark:hover:bg-accent-foreground data-[active=partial]:hover:text-background data-[active=true]:hover:bg-accent-foreground  data-[active=true]:dark:hover:bg-accent-foreground data-[active=true]:hover:text-background ",
         outline:
           "border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground",
         secondary:
