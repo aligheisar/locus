@@ -60,7 +60,7 @@ const loginUserAction = async (user: unknown) => {
   return err({ reason });
 };
 
-const logoutUserAction = async () => {
+const logoutAction = async () => {
   const cookieStore = await cookies();
   const rawSession = cookieStore.get("session")?.value;
 
@@ -101,7 +101,7 @@ const isEmailExist = async (email: string) => {
 
 export {
   signupUserAction,
-  logoutUserAction,
+  logoutAction,
   loginUserAction,
   isUsernameExist,
   isEmailExist,
