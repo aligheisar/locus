@@ -49,6 +49,19 @@
 
               ":BLANK_LINE:",
 
+              "@/server/constants/**",
+              "@/server/config/**",
+              "@/server/lib/**",
+              "@/server/utils/**",
+              "@/server/db/**",
+              "@/server/repository/**",
+              "@/server/service/**",
+              "@/server/containers/**",
+              "@/server/actions/**",
+              "@/server/**",
+
+              ":BLANK_LINE:",
+
               "@/features/*/constants/**",
               "@/features/*/config/**",
               "@/features/*/lib/**",
@@ -76,19 +89,6 @@
               "@/widgets/*/hooks/**",
               "@/widgets/*/components/**",
               "@/widgets/*/**",
-
-              ":BLANK_LINE:",
-
-              "@/server/*/constants/**",
-              "@/server/*/config/**",
-              "@/server/*/lib/**",
-              "@/server/*/utils/**",
-              "@/server/*/db/**",
-              "@/server/*/repository/**",
-              "@/server/*/service/**",
-              "@/server/*/containers/**",
-              "@/server/*/actions/**",
-              "@/server/*/**",
 
               ":BLANK_LINE:",
 
