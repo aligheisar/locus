@@ -1,4 +1,4 @@
 {
-  "*.{js,jsx,ts,tsx}": ["biome check --write", "biome check"],
-  "*.{json,yml}": ["biome check --write"]
+  "*.{js,jsx,ts,tsx}": ["biome check"],
+  "*.{json,yml}": ["biome check"]
 }
