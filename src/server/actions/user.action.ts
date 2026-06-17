@@ -2,8 +2,8 @@
 
 import { err, ok } from "@/utils/error";
 
-import { getSessionAction } from "@/server/actions/session.action";
 import { userService } from "@/server/containers/user.container";
+import { getSessionAction } from "@/server/actions/session.action";
 
 const getUserAction = async () => {
   const [error, session] = await getSessionAction();

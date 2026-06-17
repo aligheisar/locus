@@ -5,8 +5,8 @@ import { redirect } from "next/navigation";
 
 import { err, ok } from "@/utils/error";
 
-import { getUserAction } from "@/server/actions/user.action";
 import { sessionService } from "@/server/containers/session.container";
+import { getUserAction } from "@/server/actions/user.action";
 
 const getSessionAction = async () => {
   const cookieStore = await cookies();
@@ -69,8 +69,8 @@ const getCurrentSessionAction = async () => {
 };
 
 export {
-  getSessionAction,
   getActiveSessionsAction,
-  getRevokedSessionsAction,
   getCurrentSessionAction,
+  getRevokedSessionsAction,
+  getSessionAction,
 };

@@ -1,7 +1,7 @@
 import { and, eq, gt, isNull } from "drizzle-orm";
 
-import { db } from "@/server/db";
 import { sessionsTable } from "@/server/db/schema/sessions";
+import { db } from "@/server/db";
 
 class SessionRepository {
   async create(values: typeof sessionsTable.$inferInsert) {

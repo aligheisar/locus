@@ -8,6 +8,7 @@ import type { ProfileRepository } from "@/server/repositories/profile.repository
 import type { UserRepository } from "@/server/repositories/user.repository";
 import type { PasswordService } from "@/server/services/password.service";
 import type { SessionService } from "@/server/services/session.service";
+
 import { loginFormSchema } from "@/shared/schemas/login-form";
 import { requestMetaSchema } from "@/shared/schemas/request-meta";
 import { signupFormSchema } from "@/shared/schemas/signup-form";
@@ -67,7 +68,7 @@ class AuthService {
       const user = await this.authRepo.findUserByIdentity(
         validatedUser.emailOrUsername,
       );
-      if (!user || !user.password) return err({ reason: "USER_NOT_EXIST" });
+      if (!user?.password) return err({ reason: "USER_NOT_EXIST" });
 
       const isValid = await this.passwordService.verify(
         user.password,

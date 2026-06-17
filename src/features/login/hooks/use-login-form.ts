@@ -6,6 +6,7 @@ import { showToast } from "@/lib/show-toast";
 import { handleError } from "@/utils/error";
 
 import { loginUserAction } from "@/server/actions/auth.action";
+
 import {
   type LoginFormType,
   loginFormSchema,
@@ -15,11 +16,11 @@ const useLoginForm = () => {
   const router = useRouter();
 
   const form = useForm({
+    resolver: valibotResolver(loginFormSchema),
     defaultValues: {
       emailOrUsername: "",
       password: "",
     },
-    resolver: valibotResolver(loginFormSchema),
   });
 
   const handleFormSubmit = async (data: LoginFormType) => {

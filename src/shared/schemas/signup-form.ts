@@ -31,8 +31,8 @@ type SignupFormType = v.InferOutput<typeof signupFormSchema>;
 type UsernameFormType = v.InferOutput<ReturnType<typeof getUsernameFormSchema>>;
 
 export {
-  signupFormSchema,
   getUsernameFormSchema,
   type SignupFormType,
+  signupFormSchema,
   type UsernameFormType,
 };

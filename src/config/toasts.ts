@@ -1,6 +1,9 @@
 import type { ToastCode, ToastType } from "@/types/toast";
 
 const toastMessages = {
+  info: {},
+  success: {},
+  warning: {},
   error: {
     invalidCredentials: "Invalid credentials.",
     invalidInput: "Inputs are invalid.",
@@ -9,9 +12,6 @@ const toastMessages = {
     usernameTaken: "This username is taken.",
     youAlreadyRegistered: "You already registered.",
   },
-  info: {},
-  success: {},
-  warning: {},
 } as const;
 
 const TOAST_CODES = Object.fromEntries(
@@ -29,4 +29,4 @@ const TOAST_CODES = Object.fromEntries(
   [T in ToastType]: Record<ToastCode<T>, ToastCode<T>>;
 };
 
-export { toastMessages, TOAST_CODES };
+export { TOAST_CODES, toastMessages };
