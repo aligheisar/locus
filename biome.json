@@ -1,11 +1,22 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.13/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
   "assist": {
+    "enabled": true,
+    "includes": ["./src/**", "!src/components/ui/**"],
     "actions": {
       "source": {
+        "preset": "recommended",
+        "useSortedAttributes": "on",
+        "useSortedEnumMembers": "on",
+        "useSortedInterfaceMembers": "on",
+        "useSortedPackageJson": "on",
+        "useSortedProperties": "on",
+        "useSortedSelectionSet": "on",
+        "useSortedTypeFields": "on",
         "organizeImports": {
           "level": "on",
           "options": {
+            "identifierOrder": "natural",
             "groups": [
               ":NODE:",
               ":BUN:",
@@ -86,23 +97,18 @@
               ":BLANK_LINE:",
 
               ":PATH:"
-            ],
-            "identifierOrder": "natural"
+            ]
           }
         },
-        "recommended": true,
-        "useSortedAttributes": "on",
         "useSortedKeys": {
           "level": "on",
           "options": {
+            "groupByNesting": true,
             "sortOrder": "natural"
           }
-        },
-        "useSortedProperties": "on"
+        }
       }
-    },
-    "enabled": true,
-    "includes": ["./src/**"]
+    }
   },
   "css": {
     "parser": {
@@ -116,11 +122,13 @@
     "bracketSpacing": true,
     "enabled": true,
     "expand": "auto",
+    "includes": ["./src/**", "!src/components/ui/**"],
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 80
   },
   "javascript": {
+    "jsxRuntime": "transparent",
     "formatter": {
       "arrowParentheses": "always",
       "jsxQuoteStyle": "double",
@@ -128,7 +136,6 @@
       "semicolons": "always",
       "trailingCommas": "all"
     },
-    "jsxRuntime": "transparent",
     "parser": {
       "jsxEverywhere": false
     }
@@ -140,15 +147,16 @@
     }
   },
   "linter": {
+    "enabled": true,
+    "includes": ["./src/**", "!src/components/ui/**"],
     "domains": {
       "next": "recommended",
       "project": "recommended",
       "react": "recommended",
       "tailwind": "recommended"
     },
-    "enabled": true,
-    "includes": ["**", "!src/components/ui/**"],
     "rules": {
+      "preset": "recommended",
       "complexity": {
         "noImportantStyles": "off"
       },
@@ -162,7 +170,6 @@
           }
         }
       },
-      "recommended": true,
       "style": {
         "useImportType": {
           "fix": "safe",
