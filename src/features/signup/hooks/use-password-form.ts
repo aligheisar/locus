@@ -28,11 +28,11 @@ const usePasswordForm = () => {
   type PasswordFormSchema = v.InferOutput<typeof passwordSchema>;
 
   const form = useForm({
+    resolver: valibotResolver(passwordSchema),
     defaultValues: {
       confirmPassword: formData.confirmPassword ?? "",
       password: formData.password ?? "",
     },
-    resolver: valibotResolver(passwordSchema),
   });
 
   const handleFormSubmit = async (data: PasswordFormSchema) => {

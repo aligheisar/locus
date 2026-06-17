@@ -7,12 +7,13 @@ import { useForm } from "react-hook-form";
 import { showToast } from "@/lib/show-toast";
 import { handleError } from "@/utils/error";
 
-import { useSignup } from "@/features/signup/hooks/use-signup";
-
 import {
   isUsernameExist,
   signupUserAction,
 } from "@/server/actions/auth.action";
+
+import { useSignup } from "@/features/signup/hooks/use-signup";
+
 import {
   getUsernameFormSchema,
   type UsernameFormType,
@@ -36,11 +37,11 @@ const useUsernameForm = () => {
   });
 
   const form = useForm({
+    mode: "onChange",
+    resolver: valibotResolver(usernameSchema),
     defaultValues: {
       username: formData.username ?? "",
     },
-    mode: "onChange",
-    resolver: valibotResolver(usernameSchema),
   });
 
   const handleFormSubmit = async (data: UsernameFormType) => {

@@ -6,6 +6,7 @@ import { Providers } from "@/context/providers";
 import { Toaster } from "@/components/ui/sonner";
 
 const roboto = localFont({
+  variable: "--font-roboto",
   src: [
     {
       path: "./fonts/roboto-300.woff2",
@@ -33,7 +34,6 @@ const roboto = localFont({
       weight: "900",
     },
   ],
-  variable: "--font-roboto",
 });
 
 export const metadata: Metadata = {

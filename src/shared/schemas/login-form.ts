@@ -13,4 +13,4 @@ const loginFormSchema = v.object({
 
 type LoginFormType = v.InferOutput<typeof loginFormSchema>;
 
-export { loginFormSchema, type LoginFormType };
+export { type LoginFormType, loginFormSchema };

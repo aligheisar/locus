@@ -18,4 +18,4 @@ const handleError = <R extends string>(
   handler();
 };
 
-export { ok, err, handleError };
+export { err, handleError, ok };

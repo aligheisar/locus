@@ -6,9 +6,10 @@ import * as v from "valibot";
 
 import { showToast } from "@/lib/show-toast";
 
+import { isEmailExist } from "@/server/actions/auth.action";
+
 import { useSignup } from "@/features/signup/hooks/use-signup";
 
-import { isEmailExist } from "@/server/actions/auth.action";
 import { signupFormSchema } from "@/shared/schemas/signup-form";
 
 const useEmailForm = () => {
@@ -18,10 +19,10 @@ const useEmailForm = () => {
   type EmailFormSchema = v.InferOutput<typeof emailSchema>;
 
   const form = useForm({
+    resolver: valibotResolver(emailSchema),
     defaultValues: {
       email: formData.email ?? "",
     },
-    resolver: valibotResolver(emailSchema),
   });
 
   const handleFormSubmit = async (data: EmailFormSchema) => {

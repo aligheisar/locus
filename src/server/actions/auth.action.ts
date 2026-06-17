@@ -100,9 +100,9 @@ const isEmailExist = async (email: string) => {
 };
 
 export {
-  signupUserAction,
-  logoutAction,
-  loginUserAction,
-  isUsernameExist,
   isEmailExist,
+  isUsernameExist,
+  loginUserAction,
+  logoutAction,
+  signupUserAction,
 };
