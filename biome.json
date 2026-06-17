@@ -68,6 +68,19 @@
 
               ":BLANK_LINE:",
 
+              "@/server/*/constants/**",
+              "@/server/*/config/**",
+              "@/server/*/lib/**",
+              "@/server/*/utils/**",
+              "@/server/*/db/**",
+              "@/server/*/repository/**",
+              "@/server/*/service/**",
+              "@/server/*/containers/**",
+              "@/server/*/actions/**",
+              "@/server/*/**",
+
+              ":BLANK_LINE:",
+
               ":ALIAS:",
 
               ":BLANK_LINE:",
