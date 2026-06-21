@@ -9,4 +9,7 @@ const sql = postgres(env.DATABASE_URL, {
 
 const db = drizzle(sql, { casing: "snake_case" });
 
-export { db };
+type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
+type DbClient = typeof db | Tx;
+
+export { type DbClient, db };

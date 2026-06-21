@@ -1,25 +1,28 @@
 import { and, eq, gt, isNull } from "drizzle-orm";
 
 import { sessionsTable } from "@/server/db/schema/sessions";
-import { db } from "@/server/db";
+import { type DbClient, db } from "@/server/db";
 
 class SessionRepository {
-  async create(values: typeof sessionsTable.$inferInsert) {
-    return db
+  async create(
+    values: typeof sessionsTable.$inferInsert,
+    client: DbClient = db,
+  ) {
+    return client
       .insert(sessionsTable)
       .values(values)
       .returning({ sessionId: sessionsTable.id });
   }
 
-  async revoke(sessionId: string) {
-    return db
+  async revoke(sessionId: string, client: DbClient = db) {
+    return client
       .update(sessionsTable)
       .set({ revokedAt: new Date() })
       .where(eq(sessionsTable.id, sessionId));
   }
 
-  async findActiveSessions(userId: string) {
-    return db
+  async findActiveSessions(userId: string, client: DbClient = db) {
+    return client
       .select()
       .from(sessionsTable)
       .where(
@@ -31,8 +34,8 @@ class SessionRepository {
       );
   }
 
-  async findRevokedSessions(userId: string) {
-    return db
+  async findRevokedSessions(userId: string, client: DbClient = db) {
+    return client
       .select()
       .from(sessionsTable)
       .where(
@@ -40,8 +43,8 @@ class SessionRepository {
       );
   }
 
-  async findSession(sessionId: string) {
-    return db
+  async findSession(sessionId: string, client: DbClient = db) {
+    return client
       .select()
       .from(sessionsTable)
       .where(eq(sessionsTable.id, sessionId))

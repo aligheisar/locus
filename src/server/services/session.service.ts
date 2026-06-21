@@ -1,5 +1,6 @@
 import { err, ok } from "@/utils/error";
 
+import type { DbClient } from "@/server/db";
 import type { SessionRepository } from "@/server/repositories/session.repository";
 import type { TokenService } from "@/server/services/token.service";
 
@@ -15,16 +16,20 @@ class SessionService {
       ipAddress,
       userAgent,
     }: { userAgent: string | null; ipAddress: string | null },
+    client?: DbClient,
   ) {
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
     try {
-      const [{ sessionId }] = await this.sessionRepo.create({
-        expiresAt,
-        ipAddress,
-        userAgent,
-        userId,
-      });
+      const [{ sessionId }] = await this.sessionRepo.create(
+        {
+          expiresAt,
+          ipAddress,
+          userAgent,
+          userId,
+        },
+        client,
+      );
 
       const session = await this.tokenService.encrypt({
         sessionId,
