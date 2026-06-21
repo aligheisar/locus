@@ -3,11 +3,11 @@ import { eq, or } from "drizzle-orm";
 import { accountsTable } from "@/server/db/schema/accounts";
 import { profilesTable } from "@/server/db/schema/profiles";
 import { usersTable } from "@/server/db/schema/users";
-import { db } from "@/server/db";
+import { type DbClient, db } from "@/server/db";
 
 class AuthRepository {
-  async findUserByIdentity(identifier: string) {
-    return db
+  async findUserByIdentity(identifier: string, client: DbClient = db) {
+    return client
       .select({
         email: usersTable.email,
         id: usersTable.id,

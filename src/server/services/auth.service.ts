@@ -2,6 +2,7 @@ import { safeParse } from "valibot";
 
 import { err, ok } from "@/utils/error";
 
+import { db } from "@/server/db";
 import type { AccountRepository } from "@/server/repositories/account.repository";
 import type { AuthRepository } from "@/server/repositories/auth.repository";
 import type { ProfileRepository } from "@/server/repositories/profile.repository";
@@ -33,23 +34,28 @@ class AuthService {
     const validatedMeta = validateMeta.output;
 
     try {
-      const [{ userId }] = await this.userRepo.create(validatedUser.email);
-      const hashedPassword = await this.passwordService.hash(
-        validatedUser.password,
-      );
-      await this.profileRepo.create(validatedUser.username, userId);
-      await this.accountRepo.create(hashedPassword, userId);
-      const [error, session] = await this.sessionService.create(
-        userId,
-        validatedMeta,
-      );
+      return await db.transaction(async (tx) => {
+        const [{ userId }] = await this.userRepo.create(
+          validatedUser.email,
+          tx,
+        );
+        const hashedPassword = await this.passwordService.hash(
+          validatedUser.password,
+        );
+        await this.profileRepo.create(validatedUser.username, userId, tx);
+        await this.accountRepo.create(hashedPassword, userId, tx);
+        const [error, session] = await this.sessionService.create(
+          userId,
+          validatedMeta,
+          tx,
+        );
 
-      if (error) {
-        const reason = error.reason;
-        return err({ reason });
-      }
+        if (error) {
+          return tx.rollback();
+        }
 
-      return ok(session);
+        return ok(session);
+      });
     } catch {
       return err({ reason: "UNEXPECTED_ERROR" });
     }
@@ -65,28 +71,31 @@ class AuthService {
     const validatedMeta = validateMeta.output;
 
     try {
-      const user = await this.authRepo.findUserByIdentity(
-        validatedUser.emailOrUsername,
-      );
-      if (!user?.password) return err({ reason: "USER_NOT_EXIST" });
+      return await db.transaction(async (tx) => {
+        const user = await this.authRepo.findUserByIdentity(
+          validatedUser.emailOrUsername,
+          tx,
+        );
+        if (!user?.password) return err({ reason: "USER_NOT_EXIST" });
 
-      const isValid = await this.passwordService.verify(
-        user.password,
-        validatedUser.password,
-      );
-      if (!isValid) return err({ reason: "INVALID_CREDENTIALS" });
+        const isValid = await this.passwordService.verify(
+          user.password,
+          validatedUser.password,
+        );
+        if (!isValid) return err({ reason: "INVALID_CREDENTIALS" });
 
-      const [error, session] = await this.sessionService.create(
-        user.id,
-        validatedMeta,
-      );
+        const [error, session] = await this.sessionService.create(
+          user.id,
+          validatedMeta,
+          tx,
+        );
 
-      if (error) {
-        const reason = error.reason;
-        return err({ reason });
-      }
+        if (error) {
+          return tx.rollback();
+        }
 
-      return ok(session);
+        return ok(session);
+      });
     } catch {
       return err({ reason: "UNEXPECTED_ERROR" });
     }

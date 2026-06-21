@@ -1,15 +1,15 @@
 import { eq } from "drizzle-orm";
 
 import { profilesTable } from "@/server/db/schema/profiles";
-import { db } from "@/server/db";
+import { type DbClient, db } from "@/server/db";
 
 class ProfileRepository {
-  async create(username: string, userId: string) {
-    return db.insert(profilesTable).values({ userId, username });
+  async create(username: string, userId: string, client: DbClient = db) {
+    return client.insert(profilesTable).values({ userId, username });
   }
 
-  async findByUsername(username: string) {
-    return db
+  async findByUsername(username: string, client: DbClient = db) {
+    return client
       .select({
         id: profilesTable.id,
       })
