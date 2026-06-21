@@ -32,8 +32,8 @@ class UserRepository {
         username: profilesTable.username,
       })
       .from(sessionsTable)
-      .leftJoin(usersTable, eq(sessionsTable.userId, usersTable.id))
-      .leftJoin(profilesTable, eq(sessionsTable.userId, profilesTable.userId))
+      .innerJoin(usersTable, eq(sessionsTable.userId, usersTable.id))
+      .innerJoin(profilesTable, eq(sessionsTable.userId, profilesTable.userId))
       .where(eq(sessionsTable.id, sessionId))
       .limit(1)
       .then((r) => r[0] ?? null);

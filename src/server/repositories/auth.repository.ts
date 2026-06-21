@@ -15,8 +15,8 @@ class AuthRepository {
         username: profilesTable.username,
       })
       .from(usersTable)
-      .leftJoin(accountsTable, eq(usersTable.id, accountsTable.userId))
-      .leftJoin(profilesTable, eq(usersTable.id, profilesTable.userId))
+      .innerJoin(accountsTable, eq(usersTable.id, accountsTable.userId))
+      .innerJoin(profilesTable, eq(usersTable.id, profilesTable.userId))
       .where(
         or(
           eq(usersTable.email, identifier),
