@@ -28,7 +28,9 @@ const useUsernameForm = () => {
   const usernameSchema = getUsernameFormSchema(async (input) => {
     const result = await debouncedChecker(input);
 
-    if (!result || result[0]) {
+    if (!result) return false;
+
+    if (result[0]) {
       showToast("error", "somethingWentWrong");
       return false;
     }
