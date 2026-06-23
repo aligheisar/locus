@@ -1,5 +1,3 @@
-import { safeParse } from "valibot";
-
 import { err, ok } from "@/utils/error";
 
 import { db } from "@/server/db";
@@ -10,9 +8,9 @@ import type { UserRepository } from "@/server/repositories/user.repository";
 import type { PasswordService } from "@/server/services/password.service";
 import type { SessionService } from "@/server/services/session.service";
 
-import { loginFormSchema } from "@/shared/schemas/login-form";
-import { requestMetaSchema } from "@/shared/schemas/request-meta";
-import { signupFormSchema } from "@/shared/schemas/signup-form";
+import type { LoginFormType } from "@/shared/schemas/login-form";
+import type { RequestMetaType } from "@/shared/schemas/request-meta";
+import type { SignupFormType } from "@/shared/schemas/signup-form";
 
 class AuthService {
   constructor(
@@ -24,29 +22,16 @@ class AuthService {
     private passwordService: PasswordService,
   ) {}
 
-  async signup(user: unknown, meta: unknown) {
-    const validateUser = safeParse(signupFormSchema, user);
-    if (!validateUser.success) return err({ reason: "INVALID_INPUT" });
-    const validatedUser = validateUser.output;
-
-    const validateMeta = safeParse(requestMetaSchema, meta);
-    if (!validateMeta.success) return err({ reason: "INVALID_INPUT" });
-    const validatedMeta = validateMeta.output;
-
+  async signup(user: SignupFormType, meta: RequestMetaType) {
     try {
       return await db.transaction(async (tx) => {
-        const [{ userId }] = await this.userRepo.create(
-          validatedUser.email,
-          tx,
-        );
-        const hashedPassword = await this.passwordService.hash(
-          validatedUser.password,
-        );
-        await this.profileRepo.create(validatedUser.username, userId, tx);
+        const [{ userId }] = await this.userRepo.create(user.email, tx);
+        const hashedPassword = await this.passwordService.hash(user.password);
+        await this.profileRepo.create(user.username, userId, tx);
         await this.accountRepo.create(hashedPassword, userId, tx);
         const [error, session] = await this.sessionService.create(
           userId,
-          validatedMeta,
+          meta,
           tx,
         );
 
@@ -61,32 +46,24 @@ class AuthService {
     }
   }
 
-  async login(inputUser: unknown, meta: unknown) {
-    const validateUser = safeParse(loginFormSchema, inputUser);
-    if (!validateUser.success) return err({ reason: "INVALID_INPUT" });
-    const validatedUser = validateUser.output;
-
-    const validateMeta = safeParse(requestMetaSchema, meta);
-    if (!validateMeta.success) return err({ reason: "INVALID_INPUT" });
-    const validatedMeta = validateMeta.output;
-
+  async login(inputUser: LoginFormType, meta: RequestMetaType) {
     try {
       return await db.transaction(async (tx) => {
         const user = await this.authRepo.findUserByIdentity(
-          validatedUser.emailOrUsername,
+          inputUser.emailOrUsername,
           tx,
         );
         if (!user?.password) return err({ reason: "USER_NOT_EXIST" });
 
         const isValid = await this.passwordService.verify(
           user.password,
-          validatedUser.password,
+          inputUser.password,
         );
         if (!isValid) return err({ reason: "INVALID_CREDENTIALS" });
 
         const [error, session] = await this.sessionService.create(
           user.id,
-          validatedMeta,
+          meta,
           tx,
         );
 
@@ -122,6 +99,7 @@ class AuthService {
   async isUsernameExist(username: string) {
     try {
       const result = await this.profileRepo.findByUsername(username);
+
       if (result.length) return ok(true);
       return ok(false);
     } catch {

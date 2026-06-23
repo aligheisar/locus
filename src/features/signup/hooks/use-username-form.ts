@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { asyncDebounce } from "@tanstack/pacer";
 import { useForm } from "react-hook-form";
+import { safeParse } from "valibot";
 
 import { showToast } from "@/lib/show-toast";
 import { handleError } from "@/utils/error";
@@ -16,6 +17,7 @@ import { useSignup } from "@/features/signup/hooks/use-signup";
 
 import {
   getUsernameFormSchema,
+  signupFormSchema,
   type UsernameFormType,
 } from "@/shared/schemas/signup-form";
 
@@ -49,10 +51,22 @@ const useUsernameForm = () => {
   const handleFormSubmit = async (data: UsernameFormType) => {
     updateFormData(data);
 
-    const [error] = await signupUserAction({
+    const validateUser = safeParse(signupFormSchema, {
       ...formData,
       username: data.username,
     });
+
+    if (!validateUser.success) {
+      startTransition(() => {
+        router.push("/signup");
+      });
+
+      return;
+    }
+
+    const validatedUser = validateUser.output;
+
+    const [error] = await signupUserAction(validatedUser);
 
     if (!error) {
       startTransition(() => {

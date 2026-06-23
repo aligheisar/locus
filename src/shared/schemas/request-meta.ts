@@ -5,4 +5,6 @@ const requestMetaSchema = v.object({
   userAgent: v.nullable(v.string()),
 });
 
-export { requestMetaSchema };
+type RequestMetaType = v.InferOutput<typeof requestMetaSchema>;
+
+export { type RequestMetaType, requestMetaSchema };
