@@ -2,7 +2,7 @@
 
 import { startTransition, useEffect, ViewTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Loader } from "@hugeicons/core-free-icons";
+import { Loader, LoaderCircle } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
@@ -15,7 +15,11 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 
 import { useSignup } from "@/features/signup/hooks/use-signup";
 import { useUsernameForm } from "@/features/signup/hooks/use-username-form";
@@ -54,12 +58,22 @@ const UsernameForm = () => {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor={field.name}>Username</FieldLabel>
-                    <Input
-                      {...field}
-                      aria-invalid={fieldState.invalid}
-                      autoComplete="username"
-                      id={field.name}
-                    />
+                    <InputGroup>
+                      <InputGroupInput
+                        {...field}
+                        aria-invalid={fieldState.invalid}
+                        autoComplete="username"
+                        id={field.name}
+                      />
+                      {form.formState.isValidating && (
+                        <InputGroupAddon align="inline-end">
+                          <HugeiconsIcon
+                            className="animate-spin"
+                            icon={LoaderCircle}
+                          />
+                        </InputGroupAddon>
+                      )}
+                    </InputGroup>
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
