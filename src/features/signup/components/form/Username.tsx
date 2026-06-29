@@ -2,9 +2,9 @@
 
 import { startTransition, useEffect, ViewTransition } from "react";
 import { useRouter } from "next/navigation";
+import { Form, Field as FormField } from "@formisch/react";
 import { Loader, LoaderCircle } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Controller } from "react-hook-form";
 
 import { Card, CardTitle } from "@/components/ResponsiveCard";
 import { Button } from "@/components/ui/button";
@@ -49,23 +49,21 @@ const UsernameForm = () => {
         <StepCounter current={3} total={3} />
       </CardHeader>
       <CardContent>
-        <form onSubmit={form.handleSubmit(handleFormSubmit)}>
+        <Form of={form} onSubmit={handleFormSubmit}>
           <FieldGroup>
             <FieldGroup>
-              <Controller
-                control={form.control}
-                name="username"
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name}>Username</FieldLabel>
+              <FormField of={form} path={["username"]}>
+                {(field) => (
+                  <Field data-invalid={field.errors !== null}>
+                    <FieldLabel htmlFor={field.props.name}>Username</FieldLabel>
                     <InputGroup>
                       <InputGroupInput
-                        {...field}
-                        aria-invalid={fieldState.invalid}
+                        {...field.props}
+                        aria-invalid={field.errors !== null}
                         autoComplete="username"
-                        id={field.name}
+                        id={field.props.name}
                       />
-                      {form.formState.isValidating && (
+                      {form.isValidating && (
                         <InputGroupAddon align="inline-end">
                           <HugeiconsIcon
                             className="animate-spin"
@@ -74,12 +72,14 @@ const UsernameForm = () => {
                         </InputGroupAddon>
                       )}
                     </InputGroup>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
+                    {field.errors && (
+                      <FieldError
+                        errors={field.errors.map((message) => ({ message }))}
+                      />
                     )}
                   </Field>
                 )}
-              />
+              </FormField>
             </FieldGroup>
             <Field className="sm:flex-row sm:*:flex-1">
               <Button
@@ -94,16 +94,14 @@ const UsernameForm = () => {
                 Back
               </Button>
               <ViewTransition name="form-submit-button">
-                <Button disabled={form.formState.isSubmitting} type="submit">
-                  {form.formState.isSubmitting && (
-                    <HugeiconsIcon icon={Loader} />
-                  )}
+                <Button disabled={form.isSubmitting} type="submit">
+                  {form.isSubmitting && <HugeiconsIcon icon={Loader} />}
                   Finish
                 </Button>
               </ViewTransition>
             </Field>
           </FieldGroup>
-        </form>
+        </Form>
       </CardContent>
     </Card>
   );

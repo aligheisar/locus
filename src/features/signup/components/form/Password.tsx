@@ -2,7 +2,7 @@
 
 import { startTransition, useEffect, ViewTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Controller } from "react-hook-form";
+import { Form, Field as FormField } from "@formisch/react";
 
 import { Card, CardTitle } from "@/components/ResponsiveCard";
 import { Button } from "@/components/ui/button";
@@ -42,47 +42,47 @@ const PasswordForm = () => {
         <StepCounter current={2} total={3} />
       </CardHeader>
       <CardContent>
-        <form onSubmit={form.handleSubmit(handleFormSubmit)}>
+        <Form of={form} onSubmit={handleFormSubmit}>
           <FieldGroup>
             <FieldGroup>
-              <Controller
-                control={form.control}
-                name="password"
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name}>Password</FieldLabel>
+              <FormField of={form} path={["password"]}>
+                {(field) => (
+                  <Field data-invalid={field.errors !== null}>
+                    <FieldLabel htmlFor={field.props.name}>Password</FieldLabel>
                     <PasswordInput
-                      {...field}
-                      aria-invalid={fieldState.invalid}
+                      {...field.props}
+                      aria-invalid={field.errors !== null}
                       autoComplete="new-password"
-                      id={field.name}
+                      id={field.props.name}
                     />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
+                    {field.errors && (
+                      <FieldError
+                        errors={field.errors.map((message) => ({ message }))}
+                      />
                     )}
                   </Field>
                 )}
-              />
-              <Controller
-                control={form.control}
-                name="confirmPassword"
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name}>
+              </FormField>
+              <FormField of={form} path={["confirmPassword"]}>
+                {(field) => (
+                  <Field data-invalid={field.errors !== null}>
+                    <FieldLabel htmlFor={field.props.name}>
                       Confirm Password
                     </FieldLabel>
                     <PasswordInput
-                      {...field}
-                      aria-invalid={fieldState.invalid}
+                      {...field.props}
+                      aria-invalid={field.errors !== null}
                       autoComplete="new-password"
-                      id={field.name}
+                      id={field.props.name}
                     />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
+                    {field.errors && (
+                      <FieldError
+                        errors={field.errors.map((message) => ({ message }))}
+                      />
                     )}
                   </Field>
                 )}
-              />
+              </FormField>
             </FieldGroup>
             <Field className="sm:flex-row sm:*:flex-1">
               <Button
@@ -101,7 +101,7 @@ const PasswordForm = () => {
               </ViewTransition>
             </Field>
           </FieldGroup>
-        </form>
+        </Form>
       </CardContent>
     </Card>
   );

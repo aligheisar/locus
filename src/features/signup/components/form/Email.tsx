@@ -2,9 +2,9 @@
 
 import { ViewTransition } from "react";
 import Link from "next/link";
+import { Form, Field as FormField } from "@formisch/react";
 import { Loader } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Controller } from "react-hook-form";
 
 import { Card, CardTitle } from "@/components/ResponsiveCard";
 import { Button } from "@/components/ui/button";
@@ -36,33 +36,31 @@ const EmailForm = () => {
         <StepCounter current={1} total={3} />
       </CardHeader>
       <CardContent>
-        <form onSubmit={form.handleSubmit(handleFormSubmit)}>
+        <Form of={form} onSubmit={handleFormSubmit}>
           <FieldGroup>
-            <Controller
-              control={form.control}
-              name="email"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+            <FormField of={form} path={["email"]}>
+              {(field) => (
+                <Field data-invalid={field.errors !== null}>
+                  <FieldLabel htmlFor={field.props.name}>Email</FieldLabel>
                   <Input
-                    {...field}
-                    aria-invalid={fieldState.invalid}
+                    {...field.props}
+                    aria-invalid={field.errors !== null}
                     autoComplete="email"
-                    id={field.name}
+                    id={field.props.name}
                     placeholder="example@gmail.com"
                   />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
+                  {field.errors && (
+                    <FieldError
+                      errors={field.errors.map((message) => ({ message }))}
+                    />
                   )}
                 </Field>
               )}
-            />
+            </FormField>
             <FieldGroup>
               <ViewTransition name="form-submit-button">
-                <Button disabled={form.formState.isSubmitting} type="submit">
-                  {form.formState.isSubmitting && (
-                    <HugeiconsIcon icon={Loader} />
-                  )}
+                <Button disabled={form.isSubmitting} type="submit">
+                  {form.isSubmitting && <HugeiconsIcon icon={Loader} />}
                   Next
                 </Button>
               </ViewTransition>
@@ -73,7 +71,7 @@ const EmailForm = () => {
               </ViewTransition>
             </FieldGroup>
           </FieldGroup>
-        </form>
+        </Form>
       </CardContent>
     </Card>
   );
