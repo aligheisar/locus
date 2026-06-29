@@ -1,7 +1,6 @@
 import { startTransition } from "react";
 import { useRouter } from "next/navigation";
-import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useForm } from "react-hook-form";
+import { type SubmitHandler, useForm } from "@formisch/react";
 import * as v from "valibot";
 
 import { showToast } from "@/lib/show-toast";
@@ -16,16 +15,15 @@ const useEmailForm = () => {
   const router = useRouter();
   const { formData, updateData: updateFormData } = useSignup();
   const emailSchema = v.pick(signupFormSchema, ["email"]);
-  type EmailFormSchema = v.InferOutput<typeof emailSchema>;
 
   const form = useForm({
-    resolver: valibotResolver(emailSchema),
-    defaultValues: {
+    schema: emailSchema,
+    initialInput: {
       email: formData.email ?? "",
     },
   });
 
-  const handleFormSubmit = async (data: EmailFormSchema) => {
+  const handleFormSubmit: SubmitHandler<typeof emailSchema> = async (data) => {
     const [error, flag] = await isEmailExist(data.email);
 
     if (error) {

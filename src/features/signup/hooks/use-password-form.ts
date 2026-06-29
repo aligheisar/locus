@@ -1,7 +1,6 @@
 import { startTransition } from "react";
 import { useRouter } from "next/navigation";
-import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useForm } from "react-hook-form";
+import { type SubmitHandler, useForm } from "@formisch/react";
 import * as v from "valibot";
 
 import { useSignup } from "@/features/signup/hooks/use-signup";
@@ -25,17 +24,17 @@ const usePasswordForm = () => {
     ),
   );
 
-  type PasswordFormSchema = v.InferOutput<typeof passwordSchema>;
-
   const form = useForm({
-    resolver: valibotResolver(passwordSchema),
-    defaultValues: {
+    schema: passwordSchema,
+    initialInput: {
       confirmPassword: formData.confirmPassword ?? "",
       password: formData.password ?? "",
     },
   });
 
-  const handleFormSubmit = async (data: PasswordFormSchema) => {
+  const handleFormSubmit: SubmitHandler<typeof passwordSchema> = async (
+    data,
+  ) => {
     updateFormData(data);
 
     startTransition(() => {

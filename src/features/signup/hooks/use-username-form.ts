@@ -1,8 +1,7 @@
 import { startTransition } from "react";
 import { useRouter } from "next/navigation";
-import { valibotResolver } from "@hookform/resolvers/valibot";
+import { type SubmitHandler, useForm } from "@formisch/react";
 import { asyncDebounce } from "@tanstack/pacer";
-import { useForm } from "react-hook-form";
 import { safeParse } from "valibot";
 
 import { showToast } from "@/lib/show-toast";
@@ -18,7 +17,6 @@ import { useSignup } from "@/features/signup/hooks/use-signup";
 import {
   getUsernameFormSchema,
   signupFormSchema,
-  type UsernameFormType,
 } from "@/shared/schemas/signup-form";
 
 const useUsernameForm = () => {
@@ -41,14 +39,17 @@ const useUsernameForm = () => {
   });
 
   const form = useForm({
-    mode: "onChange",
-    resolver: valibotResolver(usernameSchema),
-    defaultValues: {
+    revalidate: "change",
+    schema: usernameSchema,
+    validate: "change",
+    initialInput: {
       username: formData.username ?? "",
     },
   });
 
-  const handleFormSubmit = async (data: UsernameFormType) => {
+  const handleFormSubmit: SubmitHandler<typeof usernameSchema> = async (
+    data,
+  ) => {
     updateFormData(data);
 
     const validateUser = safeParse(signupFormSchema, {
