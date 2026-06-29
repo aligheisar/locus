@@ -8,6 +8,9 @@ import { SessionItem } from "@/features/sessions/components/SessionItem";
 
 const ActiveSessions = async () => {
   const sessions = await getActiveSessionsAction();
+
+  if (!sessions.length) return null;
+
   return (
     <SectionWrapper>
       <div className="flex items-center justify-between">
