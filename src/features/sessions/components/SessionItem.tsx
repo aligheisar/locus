@@ -27,6 +27,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { revokeSessionAction } from "@/server/actions/session.action";
 import type { SessionsTableSelect } from "@/server/repositories/session.repository";
@@ -101,4 +102,30 @@ const SessionItem = ({ session, hideAction, ...props }: Props) => {
   );
 };
 
-export { SessionItem };
+type PropsSkeleton = ComponentProps<typeof Item> & {
+  hideAction?: boolean;
+};
+
+const SessionItemSkeleton = ({ hideAction, ...props }: PropsSkeleton) => {
+  return (
+    <Item {...props}>
+      <ItemMedia className="translate-y-0.5 self-start" variant="icon">
+        <Skeleton className="size-4 rounded-sm" />
+      </ItemMedia>
+      <ItemContent>
+        <Skeleton className="h-[19.25px] w-35" />
+        <Skeleton className="h-5.25 w-25" />
+      </ItemContent>
+      {!hideAction && (
+        <ItemActions>
+          <Skeleton className="size-8" />
+        </ItemActions>
+      )}
+      <ItemFooter>
+        <Skeleton className="h-5.25 w-40" />
+      </ItemFooter>
+    </Item>
+  );
+};
+
+export { SessionItem, SessionItemSkeleton };

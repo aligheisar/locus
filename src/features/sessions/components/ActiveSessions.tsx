@@ -1,10 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { ItemGroup } from "@/components/ui/item";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { getActiveSessionsAction } from "@/server/actions/session.action";
 
 import { SectionWrapper } from "@/features/sessions/components/SectionWrapper";
-import { SessionItem } from "@/features/sessions/components/SessionItem";
+import {
+  SessionItem,
+  SessionItemSkeleton,
+} from "@/features/sessions/components/SessionItem";
 
 const ActiveSessions = async () => {
   const sessions = await getActiveSessionsAction();
@@ -28,4 +32,21 @@ const ActiveSessions = async () => {
   );
 };
 
-export { ActiveSessions };
+const ActiveSessionsSkeleton = () => {
+  return (
+    <SectionWrapper>
+      <div className="flex items-center justify-between">
+        <Skeleton className="h-6 w-35" />
+        <Skeleton className="h-7 w-21.25" />
+      </div>
+
+      <ItemGroup className="gap-2">
+        {[1, 2].map((item) => (
+          <SessionItemSkeleton key={item} variant="outline" />
+        ))}
+      </ItemGroup>
+    </SectionWrapper>
+  );
+};
+
+export { ActiveSessions, ActiveSessionsSkeleton };
