@@ -1,28 +1,25 @@
 import { Suspense } from "react";
 
-import { Separator } from "@/components/ui/separator";
-
-import { ActiveSessions } from "@/features/sessions/components/ActiveSessions";
+import {
+  ActiveSessions,
+  ActiveSessionsSkeleton,
+} from "@/features/sessions/components/ActiveSessions";
 import { CurrentSession } from "@/features/sessions/components/CurrentSession";
-import { RevokedSessions } from "@/features/sessions/components/RevokedSessions";
+import { SectionWrapper } from "@/features/sessions/components/SectionWrapper";
+import { SessionItemSkeleton } from "@/features/sessions/components/SessionItem";
 
 const SessionsPage = () => {
   return (
-    <section>
-      <Suspense fallback={<p>loading current session ...</p>}>
-        <CurrentSession />
-      </Suspense>
+    <section className="grid gap-2">
+      <SectionWrapper>
+        <h2>Current Session</h2>
+        <Suspense fallback={<SessionItemSkeleton hideAction variant="muted" />}>
+          <CurrentSession />
+        </Suspense>
+      </SectionWrapper>
 
-      <Separator />
-
-      <Suspense fallback={<p>loading sessions ...</p>}>
+      <Suspense fallback={<ActiveSessionsSkeleton />}>
         <ActiveSessions />
-      </Suspense>
-
-      <Separator />
-
-      <Suspense fallback={<p>loading revoked session ...</p>}>
-        <RevokedSessions />
       </Suspense>
     </section>
   );
