@@ -30,7 +30,11 @@ class SessionRepository {
       );
   }
 
-  async findActiveSessions(userId: string, client: DbClient = db) {
+  async findActiveSessions(
+    userId: string,
+    currentSessionId: string,
+    client: DbClient = db,
+  ) {
     return client
       .select()
       .from(sessionsTable)
@@ -39,6 +43,7 @@ class SessionRepository {
           eq(sessionsTable.userId, userId),
           isNull(sessionsTable.revokedAt),
           gt(sessionsTable.expiresAt, new Date(Date.now())),
+          ne(sessionsTable.id, currentSessionId),
         ),
       );
   }
