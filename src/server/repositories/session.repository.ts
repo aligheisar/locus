@@ -1,4 +1,4 @@
-import { and, eq, gt, isNull } from "drizzle-orm";
+import { and, eq, gt, isNotNull, isNull, ne } from "drizzle-orm";
 
 import { sessionsTable } from "@/server/db/schema/sessions";
 import { type DbClient, db } from "@/server/db";
@@ -48,7 +48,10 @@ class SessionRepository {
       .select()
       .from(sessionsTable)
       .where(
-        and(eq(sessionsTable.userId, userId), isNull(sessionsTable.revokedAt)),
+        and(
+          eq(sessionsTable.userId, userId),
+          isNotNull(sessionsTable.revokedAt),
+        ),
       );
   }
 
