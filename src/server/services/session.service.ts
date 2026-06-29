@@ -48,14 +48,20 @@ class SessionService {
       return err({ reason: "INVALID_SESSION" });
     }
 
-    return ok({
-      sessionId: session.sessionId as string,
-    });
+    const sessionId = session.sessionId as string;
+
+    const repoSession = await this.sessionRepo.findSession(sessionId);
+    if (!repoSession) {
+      return err({ reason: "INVALID_SESSION" });
+    }
+
+    await this.sessionRepo.touch(repoSession.id);
+    return ok(repoSession);
   }
 
-  async revoke(sessionId: string) {
+  async revoke(sessionId: string, userId: string) {
     try {
-      await this.sessionRepo.revoke(sessionId);
+      await this.sessionRepo.revoke(sessionId, userId);
       return ok(null);
     } catch {
       return err({ reason: "UNEXPECTED_ERROR" });
