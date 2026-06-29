@@ -8,11 +8,22 @@ import { err, ok } from "@/utils/error";
 import { sessionService } from "@/server/containers/session.container";
 import { getUserAction } from "@/server/actions/user.action";
 
-const getSessionAction = async () => {
+const getRawSession = async () => {
   const cookieStore = await cookies();
   const rawSession = cookieStore.get("session")?.value;
 
   if (!rawSession) return err({ reason: "SESSION_MISSING" });
+
+  return ok(rawSession);
+};
+
+const getSessionAction = async () => {
+  const [rawSessionError, rawSession] = await getRawSession();
+
+  if (rawSessionError) {
+    const reason = rawSessionError.reason;
+    return err({ reason });
+  }
 
   const [error, session] = await sessionService.verify(rawSession);
 
@@ -25,45 +36,37 @@ const getSessionAction = async () => {
 };
 
 const getActiveSessionsAction = async () => {
-  const [error, user] = await getUserAction();
+  const [sessionError, session] = await getSessionAction();
 
-  if (error || !user.id) redirect("/login");
+  if (sessionError) redirect("/login");
 
-  const [sessionError, sessions] = await sessionService.findActiveSessions(
-    user.id,
-  );
+  const [activeSessionsError, activeSessions] =
+    await sessionService.findActiveSessions(session.userId, session.id);
 
-  if (sessionError) {
+  if (activeSessionsError) {
     redirect("/login");
   }
 
-  return sessions;
+  return activeSessions;
 };
 
 const getRevokedSessionsAction = async () => {
-  const [error, user] = await getUserAction();
-
-  if (error || !user.id) redirect("/login");
-
-  const [sessionError, sessions] = await sessionService.findRevokedSessions(
-    user.id,
-  );
+  const [sessionError, session] = await getSessionAction();
 
   if (sessionError) redirect("/login");
 
-  return sessions;
+  const [revokedSessionError, revokedSessions] =
+    await sessionService.findRevokedSessions(session.userId);
+
+  if (revokedSessionError) redirect("/login");
+
+  return revokedSessions;
 };
 
 const getCurrentSessionAction = async () => {
-  const [error, cookieSession] = await getSessionAction();
+  const [error, session] = await getSessionAction();
 
   if (error) redirect("/login");
-
-  const [sessionError, session] = await sessionService.findSession(
-    cookieSession.sessionId,
-  );
-
-  if (sessionError) redirect("/login");
 
   return session;
 };

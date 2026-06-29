@@ -14,11 +14,20 @@ class SessionRepository {
       .returning({ sessionId: sessionsTable.id });
   }
 
-  async revoke(sessionId: string, client: DbClient = db) {
+  async touch(sessionId: string, client: DbClient = db) {
+    return client
+      .update(sessionsTable)
+      .set({ lastSeenAt: new Date() })
+      .where(eq(sessionsTable.id, sessionId));
+  }
+
+  async revoke(sessionId: string, userId: string, client: DbClient = db) {
     return client
       .update(sessionsTable)
       .set({ revokedAt: new Date() })
-      .where(eq(sessionsTable.id, sessionId));
+      .where(
+        and(eq(sessionsTable.id, sessionId), eq(sessionsTable.userId, userId)),
+      );
   }
 
   async findActiveSessions(userId: string, client: DbClient = db) {
@@ -47,7 +56,13 @@ class SessionRepository {
     return client
       .select()
       .from(sessionsTable)
-      .where(eq(sessionsTable.id, sessionId))
+      .where(
+        and(
+          eq(sessionsTable.id, sessionId),
+          isNull(sessionsTable.revokedAt),
+          gt(sessionsTable.expiresAt, new Date(Date.now())),
+        ),
+      )
       .limit(1)
       .then((r) => r[0] ?? null);
   }

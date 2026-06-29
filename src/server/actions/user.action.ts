@@ -13,9 +13,7 @@ const getUserAction = async () => {
     return err({ reason });
   }
 
-  const [userError, user] = await userService.findBySessionId(
-    session.sessionId,
-  );
+  const [userError, user] = await userService.findBySessionId(session.id);
 
   if (userError) {
     const reason = userError.reason;

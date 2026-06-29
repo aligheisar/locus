@@ -86,7 +86,10 @@ class AuthService {
       return err({ reason });
     }
 
-    const [revokeError] = await this.sessionService.revoke(session.sessionId);
+    const [revokeError] = await this.sessionService.revoke(
+      session.id,
+      session.userId,
+    );
 
     if (revokeError) {
       const reason = revokeError.reason;
