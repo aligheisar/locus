@@ -1,29 +1,27 @@
 import { useRouter } from "next/navigation";
-import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useForm } from "react-hook-form";
+import { type SubmitHandler, useForm } from "@formisch/react";
 
 import { showToast } from "@/lib/show-toast";
 import { handleError } from "@/utils/error";
 
 import { loginUserAction } from "@/server/actions/auth.action";
 
-import {
-  type LoginFormType,
-  loginFormSchema,
-} from "@/shared/schemas/login-form";
+import { loginFormSchema } from "@/shared/schemas/login-form";
 
 const useLoginForm = () => {
   const router = useRouter();
 
   const form = useForm({
-    resolver: valibotResolver(loginFormSchema),
-    defaultValues: {
+    schema: loginFormSchema,
+    initialInput: {
       emailOrUsername: "",
       password: "",
     },
   });
 
-  const handleFormSubmit = async (data: LoginFormType) => {
+  const handleFormSubmit: SubmitHandler<typeof loginFormSchema> = async (
+    data,
+  ) => {
     const [error] = await loginUserAction(data);
 
     if (!error) {
