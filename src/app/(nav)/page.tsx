@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import { handleError } from "@/utils/error";
 import { Button } from "@/components/ui/button";
+import { Wrapper } from "@/components/Wrapper";
 
 import { logoutAction } from "@/server/actions/auth.action";
 import { getUserAction } from "@/server/actions/user.action";
@@ -28,7 +29,7 @@ const HomePage = async () => {
   }
 
   return (
-    <div>
+    <Wrapper>
       <pre>{JSON.stringify(user, null, 2)}</pre>
       <form
         action={async () => {
@@ -38,7 +39,7 @@ const HomePage = async () => {
       >
         <Button type="submit">logout</Button>
       </form>
-    </div>
+    </Wrapper>
   );
 };
 
