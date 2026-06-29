@@ -1,17 +1,11 @@
 import { getCurrentSessionAction } from "@/server/actions/session.action";
 
+import { SessionItem } from "@/features/sessions/components/SessionItem";
+
 const CurrentSession = async () => {
   const session = await getCurrentSessionAction();
 
-  return (
-    <div>
-      <h3>Current session.</h3>
-      <div>
-        <h4>{session.userAgent}</h4>
-        {session.ipAddress && <span>ip: {session.ipAddress}</span>}
-      </div>
-    </div>
-  );
+  return <SessionItem hideAction session={session} variant="muted" />;
 };
 
 export { CurrentSession };
