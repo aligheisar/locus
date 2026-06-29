@@ -68,9 +68,12 @@ class SessionService {
     }
   }
 
-  async findActiveSessions(userId: string) {
+  async findActiveSessions(userId: string, currentSessionId: string) {
     try {
-      const sessions = await this.sessionRepo.findActiveSessions(userId);
+      const sessions = await this.sessionRepo.findActiveSessions(
+        userId,
+        currentSessionId,
+      );
       return ok(sessions);
     } catch {
       return err({ reason: "UNEXPECTED_ERROR" });
