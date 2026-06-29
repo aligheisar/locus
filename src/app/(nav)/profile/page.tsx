@@ -1,12 +1,14 @@
+import { Wrapper } from "@/components/Wrapper";
+
 import { SettingsLink } from "@/features/profile/components/SettingsLink";
 
 const ProfilePage = () => {
   return (
-    <div>
+    <Wrapper>
       <section>
         <SettingsLink />
       </section>
-    </div>
+    </Wrapper>
   );
 };
 
