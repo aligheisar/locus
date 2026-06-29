@@ -60,7 +60,10 @@ class SessionRepository {
       );
   }
 
-  async findSession(sessionId: string, client: DbClient = db) {
+  async findSession(
+    sessionId: string,
+    client: DbClient = db,
+  ): Promise<SessionsTableSelect | null> {
     return client
       .select()
       .from(sessionsTable)
@@ -76,4 +79,6 @@ class SessionRepository {
   }
 }
 
-export { SessionRepository };
+type SessionsTableSelect = typeof sessionsTable.$inferSelect;
+
+export { SessionRepository, type SessionsTableSelect };
