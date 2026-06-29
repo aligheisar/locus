@@ -1,12 +1,25 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { err, ok } from "@/utils/error";
 
 import { sessionService } from "@/server/containers/session.container";
-import { getUserAction } from "@/server/actions/user.action";
+
+const revokeSessionAction = async (sessionId: string) => {
+  const [sessionError, session] = await getSessionAction();
+  if (sessionError) redirect("/login");
+
+  const [error] = await sessionService.revoke(sessionId, session.userId);
+
+  revalidatePath("/profile/settings/sessions");
+
+  if (error) {
+    return err({ reason: error.reason });
+  }
+};
 
 const getRawSession = async () => {
   const cookieStore = await cookies();
@@ -76,4 +89,5 @@ export {
   getCurrentSessionAction,
   getRevokedSessionsAction,
   getSessionAction,
+  revokeSessionAction,
 };
