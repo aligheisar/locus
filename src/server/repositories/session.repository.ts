@@ -47,7 +47,13 @@ class SessionRepository {
     return client
       .select()
       .from(sessionsTable)
-      .where(eq(sessionsTable.id, sessionId))
+      .where(
+        and(
+          eq(sessionsTable.id, sessionId),
+          isNull(sessionsTable.revokedAt),
+          gt(sessionsTable.expiresAt, new Date(Date.now())),
+        ),
+      )
       .limit(1)
       .then((r) => r[0] ?? null);
   }
